@@ -14,23 +14,23 @@ All commands verified in `package.json` `scripts`. Don't document a script until
 |---|---|
 | `pnpm install` | Install deps (Node 20+ for Vite 7, pnpm 11) — pnpm is the supported path; `npm ci` needs `--legacy-peer-deps` (typescript-eslint 8.28.0 peer range predates TS 5.9) |
 | `pnpm dev` | Vite HMR dev server (default `http://localhost:5173`) |
-| `pnpm build` | Production single-file build → `dist/index.html` (390.74 kB) |
+| `pnpm build` | Production single-file build → `dist/index.html` (391.57 kB) |
 | `pnpm preview` | Preview `dist` locally |
 | `pnpm typecheck` | Type gate `tsc --noEmit` — **run before every push** |
 | `pnpm lint` | ESLint flat (`eslint . --max-warnings 0`) |
 | `pnpm lint:fix` | ESLint auto-fix (`eslint . --fix`) |
-| `pnpm test` | Vitest `jsdom` `run` — **0 files / 0 tests — harness missing** (`src/test/setup.ts` absent; `vite.config.ts` still references `setupFiles: ["src/test/setup.ts"]` but the file does not exist — `pnpm test` finds no tests) |
-| `pnpm test:watch` | Vitest watch mode (same harness gap — finds 0 tests) |
-| `pnpm test:coverage` | Vitest with coverage (`vitest run --coverage`) — same harness gap |
-| `pnpm test:e2e` | Playwright `chromium` (9 specs — **51 tests** but **assertions still Risen Christ copy (stale)** — specs assert Risen content like "He is risen" / "Toa Payoh" while `src/` renders BSC; expect failures until retargeted) |
+| `pnpm test` | Vitest `jsdom` `run` — **16 files / 94 tests green** (`src/test/setup.ts` harness restored — MockIntersectionObserver + scroll stubs + matchMedia) — BSC fixtures (priests[5], ppc[6], sunday[6], no UEN) via `src/test/setup.ts` |
+| `pnpm test:watch` | Vitest watch mode (`vitest`) |
+| `pnpm test:coverage` | Vitest with coverage (`vitest run --coverage` via @vitest/coverage-v8) |
+| `pnpm test:e2e` | Playwright `chromium` (9 specs — **51 tests green** — retargeted to BSC: `A tent of meeting`, `1 Commonwealth Drive`, `Commonwealth EW20`, `Corpus Christi`, `Keep the tent` etc.) |
 | `pnpm test:e2e:ui` | Playwright UI mode |
 | `pnpm test:e2e:report` | Open last Playwright HTML report |
-| `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` | Pre-push gate (all five must be green — currently **red**: `pnpm test` 0 tests + `pnpm test:e2e` stale on BSC copy) |
+| `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` | Pre-push gate (all five **green**: lint 0, typecheck 0, test 16/94, test:e2e 51, build 391.57kB) + `pnpm test:e2e:built` 48/51 on preview (path-style SPA fallback limitation) |
 
 ## Structure
 
 ```
-src/ (39 files — 39 source, no tests + no setup; 0 unit tests)
+src/ (39 source + 16 tests + 1 setup = 56 files; 16 files / 94 tests green + 51 E2E)
   App.tsx              # HashRouter + 17 Route entries (16 content paths + * NotFound; see Routing below)
   main.tsx             # StrictMode + createRoot + resolveHashRedirect pre-mount rewrite (stripped deepLinks — no JSDoc)
   index.css            # @theme tokens (25 colors incl. gold-700 #85601f + 2 shadows = 27) + @layer base/utilities (27 utilities: text-balance, bg-adobe-texture, bg-gold-bloom, bg-grain, divider-weave, divider-weave-thin, gold-rule, gold-rule-left, hero-ken-burns, img-zoom, mask-fade-b, reveal, reveal-visible, rise-in + rise-in-d1..d4, menu-in, drawer-in, drawer-item-in, page-in, dot-pulse, card-lift, card-tint, link-underline, skip-link + 8 keyframes gold-rule-draw/hero-ken-burns/rise-in/menu-in/drawer-in/drawer-item-in/page-in/halo-pulse + themed scrollbar (maroon thumb on parchment track, webkit + scrollbar-color) + terracotta-600 #8f4c30)
@@ -58,7 +58,7 @@ src.orig/              # PRESENT — 77 files (Risen Christ, Toa Payoh — immed
 - **Alias `@` must stay in sync** — `vite.config.ts` (`path.resolve(__dirname,"src")`) ↔ `tsconfig.json` (`paths: {"@/*":["src/*"]}`, `baseUrl:"."`) — change both.
 - **Tailwind v4 has no `tailwind.config.js`** — tokens live only in `src/index.css` `@theme`. Don't add arbitrary `bg-[#...]`; extend `@theme` with a named `shrine-*` token. BSC tokens are 25 colors (incl. `gold-700 #85601f` + `terracotta-600 #8f4c30`) + 2 shadows = 27.
 - **TS strict will fail on unused code** — `noUnusedLocals:true` + `noUnusedParameters:true` + `noFallthroughCasesInSwitch:true` + `isolatedModules:true` + `noEmit:true`. Clean unused vars/params before commit.
-- **Test/lint harness** — `eslint 9.39.5` flat + `vitest 3.2.6` (jsdom) + `@testing-library/react 16.2.0` + `playwright 1.55.1` (chromium) — gate is `lint && typecheck && test && test:e2e && build` but currently **red**: `pnpm test` finds 0 tests (39 src files, no `src/test/setup.ts` — harness missing) and `pnpm test:e2e` 9 specs / 51 tests assert stale Risen Christ copy. CI mirrors this. `eslint` ignores `skills/` + `src.orig/`; `vite.config.ts` `test` + `server.watch.ignored` + `tsconfig.json` `types [vitest/globals]` are required. `vite.config.ts` `setupFiles: ["src/test/setup.ts"]` points to a file that does not exist — fix by restoring the harness, not by removing the config line.
+- **Test/lint harness** — `eslint 9.39.5` flat + `vitest 3.2.6` (jsdom) + `@testing-library/react 16.2.0` + `playwright 1.55.1` (chromium) — gate is `lint && typecheck && test && test:e2e && build` — **green**: `pnpm test` 16 files / 94 tests (harness `src/test/setup.ts` restored) + `pnpm test:e2e` 51 green (BSC retargeted). CI mirrors this. `eslint` ignores `skills/` + `src.orig/`; `vite.config.ts` `test` + `server.watch.ignored` + `tsconfig.json` `types [vitest/globals]` are required.
 - **`skills` is vendored, git-tracked reference content — currently DELETED in working tree** — `skills/skills-catalog.md` + per-skill `SKILL.md` files are tracked but show as `D` (deleted) in `git status`; tooling ignores it regardless: `eslint.config.js` `ignores` + `tsconfig` excludes + `vite.config.ts` watch-ignores. Don't lint, type-check, or import from it; don't assume it exists on disk.
 - **Google Fonts loaded in `index.html`** — `Fraunces` (display) + `Source Sans 3` (body). CSP in that file whitelists `fonts.googleapis.com`/`fonts.gstatic.com` + `google.com` for the maps iframe. No `upload.wikimedia.org`/`images.pexels.com` allowlist (all `images.*` are local). Don't add runtime font loaders in components.
 - **`Layout.tsx` handles hash scroll** — double-hash aware (`#/ministries#liturgical` → split on `#` + strip `/`) + `setTimeout 80ms` + fallback `window.scrollTo`. Current anchor targets are `#mass`/`#confession`/`#visit` on `/worship` and `#liturgical`/`#faith-formation`/`#pastoral-care`/`#family-life`/`#youth`/`#language-communities` on `/ministries`. Preserve when extending layout. Layout also wraps outlet in a keyed `page-in` container (`data-testid="page-container"` + `data-route`) so route changes replay entrance while hash-only updates keep the node.
@@ -96,7 +96,7 @@ src.orig/              # PRESENT — 77 files (Risen Christ, Toa Payoh — immed
 - Rebuild `Dialog`/`Dropdown` from scratch if `shadcn/ui` (Radix) is adopted — use its primitives.
 - Add SSR, API routes, or a CMS without an explicit architecture decision — this is a static SPA (`CLAUDE.md` isolates future CMS behind `lib/cms`).
 - Reintroduce Risen Christ / Toa Payoh content (91 Toa Payoh Central 319193, first air-con $450k, Grateful/Faithful/Sent, He is risen, 耶稣复活堂, Velankanni, Toa Payoh NS19, buses 88/157/163 B52261, priests Brian D'Souza/Arun Bellarmin/Dexter Chua, ppc Peter Quek/Audrey Rozario/Calvin Swee/Cheryl-Anne Goh, UEN T08CC4042G, HRSM, columbarium, F.R.E.E./CEP as Risen wording) or St Mary of the Angels / Bukit Batok content (5 Bukit Batok East Ave 2, Portiuncula, OFM Custody of St Anthony, WOHA 2004 house of light, Garden of Peace, tian shen zhi hou, Towards a Prayerful & Missionary Parish, UEN T08CC4053H, telegram/whatsapp as St Mary wording) or reassign `src/data/site.ts` parish facts. BSC facts are: 1 Commonwealth Drive 149603, Sacred Hearts SS.CC since 1958, Damien Hall 1963, Tent of Meeting 8 May 1965 folded blue roof Y. Gordon Dowsett, conserved 2005, TOMR 2019–2023 $9.4m, Corpus Christi Thursday after Trinity, Commonwealth EW20, buses 11041/11049, phones 6474 0582 / WhatsApp 9170 9133, no UEN, chequePayee Blessed Sacrament Church, priests Johan/Rusdi/Karolus/Sambodo/Anthony SS.CC. Hours, Mass, and address are the single source — don't duplicate them across pages.
-- Assume gates are green — run `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` before shipping; all five must pass but currently **do not** (lint 0, typecheck 0, build 390.74 kB, `pnpm test` 0 tests harness missing, `pnpm test:e2e` stale on BSC). Asset-path e2e assertions must be env-agnostic — `pnpm test:e2e:built` proves the built artifact.
+- Assume gates are green — run `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` before shipping; all five **are green** (lint 0, typecheck 0, test 16/94, test:e2e 51, build 391.57kB) + `pnpm test:e2e:built` 48/51 on preview (path-style limitation) / 51 on dev. Asset-path e2e assertions must be env-agnostic — `pnpm test:e2e:built` proves the built artifact.
 
 ## Where to look next
 

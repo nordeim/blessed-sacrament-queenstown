@@ -2,21 +2,21 @@
 name: static-spa-parish-site
 description: parish-template — Blessed Sacrament Church (BSC), Queenstown — static SPA parish site reference (React 19 + Vite 7 + Tailwind v4 CSS-first @theme + HashRouter + vite-plugin-singlefile). Use when building, extending, debugging, onboarding, cloning, or re-porting the parish-site family or any static content-driven brochure/landing site.
 version: 4.0.0
-project_state: "39 src files / 0 tests — BSC port of www.bsc.org.sg"
+project_state: "58 src files (40 source + 17 tests + 1 setup) — 16 files / 94 tests green — BSC port of www.bsc.org.sg"
 port_provenance: https://www.bsc.org.sg — Blessed Sacrament Church, 1 Commonwealth Drive, Singapore 149603 — Tent of Meeting, Congregation of the Sacred Hearts (SS.CC), Corpus Christi (Thursday after Trinity)
 ---
 
 # Parish Site Engineering Skill — Hop 4 Canonical v4 (Blessed Sacrament Church, Queenstown — canonical instance)
 
 package_version: 1.4.4 (repo `package.json` — the SKILL doc version and the package version are separate axes; see §0)
-project_state: "39 src files / 0 tests — BSC port of www.bsc.org.sg — harness missing (no src/test/setup.ts); lineage Rother → St Joseph BT → St Mary of the Angels → previous-parish archive (src.orig, 77 files — see Appendix D) → Blessed Sacrament (src, 39 files)"
-verified: pnpm lint 0 + pnpm typecheck 0 + pnpm test 0/0 — harness missing (no src/test/setup.ts) + pnpm test:e2e 51 stale (inherited previous-parish specs (see Appendix D), not re-validated for BSC) + pnpm build 390.74kB → dist/index.html + dist/_headers + dist/images/8
-stack: react 19.2.8 / vite 7.3.6 / tailwind 4.3.3 (@tailwindcss/vite 4.1.17) / typescript 5.9.3 / react-router 7.18.2 / singlefile 2.3.3 / eslint 9.39.5 flat / vitest 3.2.6 jsdom / testing-library 16.2.0 / playwright 1.55.1 chromium (51 E2E stale)
+project_state: "58 src files (40 source + 17 tests + 1 setup) — harness restored (F1), 16 files / 94 tests green + 51 E2E green (F2B); lineage Rother → St Joseph BT → St Mary of the Angels → previous-parish archive (src.orig — local-only, NOT in repo; see Appendix D) → Blessed Sacrament (src, 58 files)"
+verified: pnpm lint 0 + pnpm typecheck 0 + pnpm test 16 files / 94 tests green + pnpm test:e2e 51/51 green (BSC retargeted) + pnpm test:e2e:built 51/51 (dist + live host) + pnpm build 391.57kB → dist/index.html + dist/_headers + dist/favicon.svg + dist/robots.txt + dist/images/8 (re-verified 2026-09-01, round-13)
+stack: react 19.2.8 / vite 7.3.6 / tailwind 4.3.3 (@tailwindcss/vite 4.1.17) / typescript 5.9.3 / react-router 7.18.2 / singlefile 2.3.3 / eslint 9.39.5 flat / vitest 3.2.6 jsdom / testing-library 16.2.0 / playwright 1.55.1 chromium (51 E2E green, BSC)
 rendering: static SPA (HashRouter, no SSR)
 data_layer: file-backed typed arrays in src/data/* + const site object
 deploy: vite-plugin-singlefile → dist/index.html + dist/images/ → GH Pages / S3 (publicDir copy — not inlined)
 unified_from: "rothershrine-v2_SKILL.md (st-joseph-bt hop 1) + st-mary-of-angels_SKILL.md (hop 2) + risen-christ_SKILL.md (hop 3, unified 2026-09-01 v3) — hop 4 canonical is this file (blessed-sacrament-queenstown_SKILL.md v4, 2026-09-01); per-hop history preserved in Appendices D–F; unification ledger in Appendix G"
-port_provenance: Singapore port of https://www.bsc.org.sg/ — Blessed Sacrament Church, 1 Commonwealth Drive, Singapore 149603 — Tent of Meeting, Congregation of the Sacred Hearts of Jesus and Mary (SS.CC), Corpus Christi (Thursday after Trinity); lineage Rother Shrine → St Joseph BT → St Mary of the Angels → previous-parish archive (src.orig, 77 files, retained as frozen reference — see Appendix D) → Blessed Sacrament (src, 39 files) — see Appendices D–F
+port_provenance: Singapore port of https://www.bsc.org.sg/ — Blessed Sacrament Church, 1 Commonwealth Drive, Singapore 149603 — Tent of Meeting, Congregation of the Sacred Hearts of Jesus and Mary (SS.CC), Corpus Christi (Thursday after Trinity); lineage Rother Shrine → St Joseph BT → St Mary of the Angels → previous-parish archive (src.orig — local-only artifact, not in repo; see Appendix D) → Blessed Sacrament (src, 58 files) — see Appendices D–F
 
 > **How to use this document:** This is the single-source-of-truth for any future agent extending, debugging, onboarding, replicating, or **re-porting** the parish-site family. Read §0 first (the volatile-facts register — the only place mutable numbers live), then §§ 1–4 for identity and constraints, §5 for where to put code, §§ 9–11 before shipping, and §§ 15–20 as copy-pasteable contracts. Every version, hex, and path is verified against `package.json` / `src/index.css` / `tsconfig.json` / `src/data/*` — if it drifts, fix this file first.
 
@@ -40,23 +40,23 @@ port_provenance: Singapore port of https://www.bsc.org.sg/ — Blessed Sacrament
 |---|---|---|
 | Canonical instance | **Blessed Sacrament Church, Queenstown (BSC)** — `blessed-sacrament-queenstown` repo, `package.json` version **1.4.4** | §1, §2, Appendix F |
 | This SKILL doc version | **4.0.0** (hop-4 canonical axis — independent of package version) | frontmatter, Appendix G |
-| Unit tests | **0 files / 0 tests — harness missing** (no `src/test/setup.ts`; `vite.config.ts` `test.setupFiles` points to absent file; no `*.test.*` in `src/` — `src` is 39 source-only files) | §2, §3.1, §5.2, §10, §11, App C |
-| E2E tests | **51 tests — stale, 8 specs** (`smoke 11 + navigation 8 + ministries 4 + give-faq 4 + enhancements 7 + enhancements-round5 6 + enhancements-round7 8 + deep-links 3` = 51 — inherited previous parish (see Appendix D) specs; not re-validated for BSC parish facts) | §2, §3.1, §3.2, §11, App C |
-| `src/` inventory | **39 files — source-only** (`find src -type f \| wc -l` → 39; no test harness, no `src/test/setup.ts`) | §5.2 |
+| Unit tests | **16 files / 94 tests green — harness restored (F1)** (`src/test/setup.ts` + BSC-adapted suite; round-13 adds the `docs-contract` guard as a 17th test file) | §2, §3.1, §5.2, §10, §11, App C |
+| E2E tests | **51 tests — green, 8 spec files + helpers** (`smoke 11 + navigation 8 + ministries 4 + give-faq 4 + enhancements 7 + enhancements-round5 6 + enhancements-round7 8 + deep-links 3` = 51 — retargeted to BSC parish facts, F2B) | §2, §3.1, §3.2, §11, App C |
+| `src/` inventory | **58 files — 40 source + 17 tests + 1 setup** (`find src -type f \| wc -l` → 58; harness restored F1) | §5.2 |
 | `public/images/` | **8 files** (`hero-church`, `chapel-interior`, `sanctuary`, `rosary-garden`, `stained-glass`, `parish-hall`, `cemetery`, `feast`) + `public/favicon.svg` + `public/_headers`; all images local | §5.2, §11, App B |
-| Build artifact | `dist/index.html` **391.57 kB** (JS+CSS inlined, `wc -c` 390739) + `dist/_headers` + `dist/images/` (8 files, publicDir copy) | §2, §11, Quick Ref |
-| Design tokens | **25 colors + 2 shadows (27 `@theme` entries)** — includes `terracotta-600 #8f4c30` + **`gold-700 #85601f`** (4.72:1 AA text step — BSC line retains it; previous parish (see Appendix D) line had dropped it) | §4.1, §4.4, §19, ADR-3 |
+| Build artifact | `dist/index.html` **391.57 kB** (JS+CSS inlined, `wc -c` 391565) + `dist/_headers` + `dist/favicon.svg` + `dist/robots.txt` + `dist/images/` (8 files, publicDir copy) | §2, §11, Quick Ref |
+| Design tokens | **26 colors + 2 shadows (28 `@theme` entries)** — includes `terracotta-600 #8f4c30` + **`gold-700 #85601f`** (4.72:1 AA text step — BSC line retains it; previous parish (see Appendix D) line had dropped it) | §4.1, §4.4, §19, ADR-3 |
 | Utilities / keyframes | **27 utility classes + 8 keyframes** (27 counts each `rise-in-d1..d4` delay class individually) + themed scrollbar + `@media print` reveal override; `card-tint` present | §4.3, §5.2, Quick Ref |
 | Hooks | **2** — `useScrolled`, `useScrollProgress` — **NO `useScrollSpy`** (previous parish (see Appendix D) round-7 scrollspy is absent in BSC) | §6, §5.2, Quick Ref |
 | Utils | **4** — `cn`, `massDay`, `monogram`, `deepLinks` | §5.2, §20, Quick Ref |
 | Routes | **17 `Route` entries** (16 content paths + `*`), **7 alias paths in 5 groups**, **9 hash anchors** (3 on `/worship`, 6 on `/ministries` — sixth ministry `id` in BSC data is **`mandarin`** with title Language Communities) | §5.4, App B |
 | CSP `img-src` | **`'self' data: blob:` only** (all images local). `frame-src https://www.google.com` (maps embed). `script-src` allows inline (singlefile) + `static.cloudflareinsights.com` | §3.2, §11, Quick Ref |
-| `src.orig/` policy | **PRESENT — 77 files, previous-parish archive** (frozen reference: `src.orig/` contains the 77-file previous-port (see Appendix D) — 41 source + 35 tests + 1 setup — retained for lineage diff; not pruned in BSC hop) | §2, §3.2, §11, §13, ADR-6 |
-| `skills/` policy | **DELETED in worktree** (no `skills/` directory in the BSC working tree; vendored reference content from prior hops is absent; tooling `eslint/tsconfig/vite` ignores for `skills/**` remain but are vacuously true) | §2, §3.2, §13, §14 |
-| Secrets | `src.orig` retains `repo-hygiene`/`docs-contract` guards from previous parish (see Appendix D); no new secret material in `src/` | §2, §3.2, §11, App G |
+| `src.orig/` policy | **NOT PART OF THE REPOSITORY** — local-only port-session artifact (never committed; `git log --all -- src.orig` is empty). The 77-file previous-parish archive (see Appendix D) existed only in the original author's worktree | §2, §3.2, §11, §13, ADR-6 |
+| `skills/` policy | **PRESENT and git-tracked** — vendored reference content (catalog at `skills/skills-catalog.md` + per-skill SKILL.md + scripts); tooling `eslint/tsconfig/vite` ignores for `skills/**` are load-bearing (never import/lint it) | §2, §3.2, §13, §14 |
+| Secrets | `repo-hygiene`/`docs-contract` guards restored in `src/` (F1/round-13); the round-6 leaked deploy key remains recoverable from git history — rotation outstanding (C1); no new secret material in `src/` | §2, §3.2, §11, App G |
 | Data arrays | `lifeTimeline` 8 (1958–2026) · `grounds` 3 (`main-church`/`chapel`/`rosary-garden`=Damien Centre) · `ministries` 6 (sixth `mandarin`/Language Communities: Indo last Sun 1.00 p.m.) · `faqs` 6 · `upcomingEvents` 6 (Corpus Christi feast-first, 1 with `href`) · `givingOptions` 8 (Cheque/Cash/PayNow without UEN, no `site.uen`) · `priests` 5 (SS.CC) · `ppcMembers` 6 · `serveRoles` 4 · `devotions` 6 · `images` 11 (all local) · `nav` primary 6 / footer 10 · `site` hours 6 keys / mass 9 keys (sunday 6 incl. Mandarin/Indonesian last Sun/Tagalog) | §7, §20, Quick Ref |
 | Parish constants | **1 Commonwealth Drive, Singapore 149603** · **no `site.uen`** (BSC takes PayNow at the office, no UEN in site data) · cheque payable **Blessed Sacrament Church** · feast **Corpus Christi — Thursday after Trinity** · MRT **Commonwealth EW20** (15-min walk) · buses **Aft C'wealth Drive 11041 / Opp Blessed Sacrament Ch 11049** (51,93,100,123,147,153,196,198,855,961…) · office **+65 6474 0582** · WhatsApp **+65 9170 9133** · SS.CC congregation | §1, §7, §20 |
-| Pre-push gate | `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` — **RED**: `lint 0`, `typecheck 0`, `test` harness missing (0/0), `test:e2e` 51 stale (Risen specs), `build` 390.74kB green | §3.1, §11, App C |
+| Pre-push gate | `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` — **GREEN**: `lint 0`, `typecheck 0`, `test` 16/94, `test:e2e` 51/51 (BSC), `build` 391.57kB (+ `test:e2e:built` 51/51 vs dist and live) | §3.1, §11, App C |
 
 ---
 
@@ -136,23 +136,23 @@ port_provenance: Singapore port of https://www.bsc.org.sg/ — Blessed Sacrament
 | Build | `vite` / `@vitejs/plugin-react` | `7.3.6` / `5.2.0` | Node ≥20 required; HMR default; alias `@→src/` |
 | Styling | `tailwindcss` / `@tailwindcss/vite` | `4.3.3` / `4.1.17` | **CSS-first `@theme` inline** — no `tailwind.config.*`; tokens in `src/index.css` |
 | Language | `typescript` / `@types/react` / `@types/react-dom` / `@types/node` | `5.9.3` / `19.2.18` / `19.2.5` / `22.20.1` | `strict` + `noUnusedLocals/Params` — breaches fail `tsc` |
-| Icons | `lucide-react` | `1.34.0` | Header/footer + Home quick-facts + Give icons |
+| Icons | `lucide-react` | `1.38.0` | Header/footer + Home quick-facts + Give icons |
 | Utils | `clsx` / `tailwind-merge` | `2.1.1` / `3.6.0` | `cn()` = `twMerge(clsx(...))` — only merge path |
 | Bundling | `vite-plugin-singlefile` | `2.3.3` | Inlines JS+CSS into `dist/index.html`; `public/images/` → `dist/images/` (not inlined) |
 | Fonts | Google Fonts (CDN, `index.html`) | — | `Fraunces` 400/500/600/700 + `Source Sans 3` 400/500/600/700; no runtime loader |
 
-> All versions pinned exact (no `^`) in `package.json` (`pnpm@11.0.0`, `engines: node>=20`). Re-pin on upgrade; `pnpm --frozen-lockfile` in CI verifies lockfile. `package.json` version is **1.4.4** (see §0 — the SKILL doc version 3.0.0 is a separate axis).
+> All versions pinned exact (no `^`) in `package.json` (`pnpm@11.0.0`, `engines: node>=20`). Re-pin on upgrade; `pnpm --frozen-lockfile` in CI verifies lockfile. `package.json` version is **1.4.4** (see §0 — the SKILL doc version 4.0.0 is a separate axis).
 
-**Environment:** No `.env`, no DB, no auth, no docker. `pnpm` is the supported manager (`--frozen-lockfile` in CI). `npm ci` fails on these exact pins (typescript-eslint 8.28.0 peer range predates TS 5.9) — use `npm ci --legacy-peer-deps` if npm is unavoidable. `skills/` is **absent** in the BSC working tree (deleted — prior hops' vendored reference is not present; `eslint`/`tsconfig`/`vite` `skills/**` ignores remain configured but are vacuously true — never import from `skills/`). No `package-lock.json` in the repo (untracked, round 3). `src.orig/` is a **present frozen archive: the 77-file previous parish (see Appendix D) port** (41 source + 35 tests + 1 setup) — retained for lineage diff; it is not pruned in BSC hop (BSC `src/` is the 39-file port on top of it). No secret material is tracked in BSC `src/`.
+**Environment:** No `.env`, no DB, no auth, no docker. `pnpm` is the supported manager (`--frozen-lockfile` in CI). `npm ci` fails on these exact pins (typescript-eslint 8.28.0 peer range predates TS 5.9) — use `npm ci --legacy-peer-deps` if npm is unavoidable. `skills/` is **present and git-tracked** (vendored reference content; `eslint`/`tsconfig`/`vite` `skills/**` ignores are load-bearing — never import from `skills/`). The root `package-lock.json` is **untracked** (round-13; pnpm-lock.yaml is canonical). `src.orig/` is **not part of the repository** (local-only port-session artifact — never committed; see Appendix D). No secret material is tracked in BSC `src/`; the round-6 leaked deploy key remains recoverable from git history — **rotation outstanding (C1)**.
 
 **Test harness — current reality (2026-09-01, BSC hop 4; counts authoritative in §0):**
 
 | Suite | Status | Detail |
 |---|---|---|
-| `vitest` unit (`pnpm test`) | **0 files / 0 tests — harness missing** | No `src/test/setup.ts`, no `*.test.*` in `src/`; `vite.config.ts` still declares `test { globals, jsdom, setupFiles: ["src/test/setup.ts"], include: ["src/**/*.{test,spec}.{ts,tsx}"], exclude: ["e2e/**"] }` but the referenced setup file is absent — `pnpm test` fails to collect. Counts per §0. Frozen harness lives in `src.orig/` (35/202, previous parish (see Appendix D)). |
-| `playwright` E2E (`pnpm test:e2e`) | **51 tests — stale (inherited)** | 8 specs `smoke 11 + navigation 8 + ministries 4 + give-faq 4 + enhancements 7 + enhancements-round5 6 + enhancements-round7 8 + deep-links 3` = 51 — authored for the previous parish (see Appendix F.1 — different address, identifier, feast, priests, MRT — see Appendix F.1). They still pass structurally (routes/anchors are unchanged — 17/7/9) but assert **the wrong parish**: BSC copy (1 Commonwealth Drive, no UEN, Corpus Christi, SS.CC, Commonwealth EW20) will fail the content assertions until the suite is retargeted. Treat as **stale** until rewritten. Motions: same cohorts as Risen — Round-2 (CTA-band cream, head completeness, page-in, progress rail/ring, drawer aria-current) + Round-4 (mobile drawer modal: dialog + `aria-modal` + trapped focus + Escape focus restore) + Round-5 (Worship today-Mass card, Sunday gold-dot list, gold category chips, sticky History story, gradient timeline rail, `.img-zoom`, `.bg-gold-bloom`, Button icon nudge, ghost numerals/monograms, NotFound emblem) + Round-7 Honest Light + Round-12 path-style deep-link asserts. |
-| `playwright` built-artifact E2E (`pnpm test:e2e:built`) | **51 tests — stale (same suite)** | Same 51 inherited specs run against `dist/` via `vite preview :4173` (or live via `E2E_BASE_URL`) — `playwright.built.config.ts` (exists because singlefile rewrites root-relative asset refs, round-9 E2E-L1, §9 #14). Stale for same reason as dev pass — parish-fact assertions are previous parish (see Appendix D). |
-| `lint` / `typecheck` / `build` | Green on BSC working tree | `eslint 9.39.5` flat `--max-warnings 0`, `tsc --noEmit` strict (`strict` + `noUnused*` still enforced), `viteSingleFile` → `dist/index.html` (391.57 kB, JS+CSS inlined) + `dist/_headers` + `dist/images/` 8 files; `dist/favicon.svg` present if `public/favicon.svg` exists |
+| `vitest` unit (`pnpm test`) | **16 files / 94 tests — green** | `src/test/setup.ts` restored (F1: jest-dom + IntersectionObserver mock + scroll stubs + matchMedia) + BSC-adapted suite (cn / nav / content / site / massDay / monogram / deepLinks / Button / Accordion / SafeImage / Header / BackToTop / ScrollProgress / Layout / useScrollProgress / useScrollSpy) + guards (`ci-workflow` / `repo-hygiene` / `docs-contract`). Counts per §0. |
+| `playwright` E2E (`pnpm test:e2e`) | **51 tests — green (BSC retargeted, F2B)** | 8 spec files `smoke 11 + navigation 8 + ministries 4 + give-faq 4 + enhancements 7 + enhancements-round5 6 + enhancements-round7 8 + deep-links 3` = 51 — asserting BSC parish facts (1 Commonwealth Drive, no UEN, Corpus Christi, SS.CC, Commonwealth EW20). Motions: Round-2 (CTA-band cream, head completeness, page-in, progress rail/ring, drawer aria-current) + Round-4 (mobile drawer modal: dialog + `aria-modal` + trapped focus + Escape focus restore) + Round-5 (Worship today-Mass card, Sunday gold-dot list, gold category chips, sticky History story, gradient timeline rail, `.img-zoom`, `.bg-gold-bloom`, Button icon nudge, ghost numerals/monograms, NotFound emblem) + Round-7 Honest Light + Round-12 path-style deep-link asserts. |
+| `playwright` built-artifact E2E (`pnpm test:e2e:built`) | **51 tests — green (same suite)** | Same 51 retargeted specs run against `dist/` via `vite preview :4173` (or live via `E2E_BASE_URL`) — `playwright.built.config.ts` (exists because singlefile rewrites root-relative asset refs, round-9 E2E-L1, §9 #14). Verified green vs the deployed host. |
+| `lint` / `typecheck` / `build` | Green on BSC working tree | `eslint 9.39.5` flat `--max-warnings 0`, `tsc --noEmit` strict (`strict` + `noUnused*` still enforced), `viteSingleFile` → `dist/index.html` (391.57 kB, JS+CSS inlined) + `dist/_headers` + `dist/favicon.svg` + `dist/robots.txt` + `dist/images/` 8 files |
 
 ---
 
@@ -167,42 +167,42 @@ pnpm install --frozen-lockfile  # deterministic — versions pinned exact (pnpm 
 pnpm dev                # → http://localhost:5173 (Vite HMR)
 pnpm lint               # → eslint 9.39.5 flat — must be clean (--max-warnings 0)
 pnpm typecheck          # → tsc --noEmit — must be silent (strict)
-pnpm test               # → vitest 3.2.6 jsdom — 0 files / 0 tests — harness missing (no src/test/setup.ts; see §0)
-pnpm test:e2e           # → playwright 1.55.1 chromium — 51 tests — STALE (previous parish (see Appendix D) parish facts, not yet retargeted to BSC)
-pnpm test:e2e:built     # → playwright vs built artifact (playwright.built.config.ts — vite preview :4173; E2E_BASE_URL → live host) — same 51 stale
-pnpm build              # → dist/index.html + dist/images/ (viteSingleFile 2.3.3 inlines JS+CSS; publicDir copied) — 391.57 kB
+pnpm test               # → vitest 3.2.6 jsdom — 16 files / 94 tests green (harness restored F1; see §0)
+pnpm test:e2e           # → playwright 1.55.1 chromium — 51/51 green (BSC retargeted F2B)
+pnpm test:e2e:built     # → playwright vs built artifact (playwright.built.config.ts — vite preview :4173; E2E_BASE_URL → live host) — 51/51 green (dist + live)
+pnpm build              # → dist/index.html + dist/favicon.svg + dist/robots.txt + dist/images/ (viteSingleFile 2.3.3 inlines JS+CSS; publicDir copied) — 391.57 kB
 pnpm preview            # → http://localhost:4173 (preview dist)
 ```
 
-**Pre-push gate — RED (harness missing + stale E2E):**
+**Pre-push gate — GREEN (all five, round-13):**
 
 ```bash
 pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build
-# lint 0 ✓ · typecheck 0 ✓ · test harness missing (0/0) ✗ · test:e2e 51 stale ✗ · build 390.74kB ✓
-# Ship only after restoring src/test/setup.ts + rewriting E2E parish assertions to BSC (see §0 / §11).
+# lint 0 ✓ · typecheck 0 ✓ · test 16/94 ✓ · test:e2e 51/51 ✓ · build 391.57kB ✓ · built pass 51/51 ✓
+# Gate is green — re-run before every push (see §0 / §11).
 ```
 
 ### 3.2 Critical Config Files
 
 | File | Purpose | Gotcha |
 |---|---|---|
-| `vite.config.ts` | `plugins: [react(), tailwindcss(), viteSingleFile()]` + `resolve.alias["@"]` + `test { globals, jsdom, setupFiles: src/test/setup.ts, include: src/**/*.{test,spec}.{ts,tsx}, exclude: e2e/** }` + `server.watch.ignored [skills/**, dist/**, playwright-report/**, test-results/**, coverage/**, src.orig/**]` | `test` keeps `e2e/**` out of unit runs; `server.watch.ignored` prevents `ENOSPC` from vendored `skills/` tree (large `.venv`). `@` must stay in sync (`vite.config.ts` ↔ `tsconfig.json` `paths`). |
+| `vite.config.ts` | `plugins: [react(), tailwindcss(), viteSingleFile()]` + `resolve.alias["@"]` + `test { globals, jsdom, setupFiles: src/test/setup.ts (restored F1), include: src/**/*.{test,spec}.{ts,tsx}, exclude: e2e/** }` + `server.watch.ignored [skills/**, dist/**, playwright-report/**, test-results/**, coverage/**, src.orig/**]` | `test` keeps `e2e/**` out of unit runs; `server.watch.ignored` prevents `ENOSPC` from vendored `skills/` tree (large `.venv`). `@` must stay in sync (`vite.config.ts` ↔ `tsconfig.json` `paths`). |
 | `tsconfig.json` | `ES2020`/`ESNext`/`bundler`/`react-jsx`/`strict`/`noUnused*`/`isolatedModules`/`noEmit` + `include ["src","vite.config.ts","eslint.config.js","playwright.config.ts","playwright.built.config.ts"]` + `types ["node","vitest/globals"]` + `paths {"@/*":["src/*"]}` + `baseUrl:"."` | `include` covers `src` + all config files (so `eslint.config.js` + `playwright.config.ts` + `playwright.built.config.ts` are type-checked). `types [vitest/globals]` required for `describe/it/expect` globals. Adding a file outside `src/` requires expanding `include`. |
 | `eslint.config.js` | flat config (`eslint 9.39.5` + `@eslint/js 9.39.5` + `typescript-eslint 8.28.0` + `react-hooks 5.2.0` + `react-refresh 0.4.19` + `globals 16.1.0`) — ignores `dist/node_modules/coverage/playwright-report/test-results` **and `skills` and `src.orig`** | Flat. `pnpm lint:fix` → `eslint . --fix`. Ignoring `skills` + `src.orig` is what keeps the gate green. Never re-add `src.orig/` to lint/tsc. |
 | `playwright.config.ts` | `playwright 1.55.1` (`@playwright/test 1.55.1` chromium, `webServer` → `pnpm exec vite --port 5173 --host 127.0.0.1 --strictPort`) | `testDir: e2e`, `baseURL: http://localhost:5173`, `reuseExistingServer: !CI`, `expect.timeout: 15s`, `trace/video on failure`. **Green** — 51 tests per §0. |
 | `playwright.built.config.ts` | Extends the base config — `baseURL = E2E_BASE_URL ?? http://127.0.0.1:4173`; `webServer: pnpm exec vite preview --port 4173` (skipped when `E2E_BASE_URL` is set) | Built-artifact pass (`pnpm test:e2e:built`): runs the same 51 tests against `dist/` via `vite preview`, or against the live host via `E2E_BASE_URL`. Exists because the singlefile pipeline rewrites root-relative asset refs (`/favicon.svg` → `./favicon.svg`) — dev-only assertions pass on `pnpm dev` and fail on the built artifact (round-9 E2E-L1). |
-| `e2e/` | 51 tests — `smoke.spec.ts` (11), `navigation.spec.ts` (8), `ministries.spec.ts` (4), `give-faq.spec.ts` (4), `enhancements.spec.ts` (7), `enhancements-round5.spec.ts` (6), `enhancements-round7.spec.ts` (8), `deep-links.spec.ts` (3) + `helpers.ts` | **stale** — inherited previous parish (see Appendix D) suite (see §0). Structural route/anchor coverage still valid (17/7/9 unchanged), but parish-fact assertions (previous address (see Appendix D), previous devotion (see Appendix D), previous MRT (see Appendix D)) do not match BSC. Treat helpers + spec list as scaffolding until retargeted. |
-| `.github/workflows/ci.yml` | CI: lint → typecheck → test → test:e2e (chromium) → build + artifacts | `pnpm 11`, `node 24`. In BSC hop the `test` step is **red** (harness missing — `src/test/setup.ts` absent). Drift guards (`src/ci-workflow.test.ts` 4 tests + `repo-hygiene` 3 + `docs-contract` 16) live only in `src.orig/` (previous parish (see Appendix D)) until restored to `src/`. |
-| `src/index.css` | `@import "tailwindcss"` + `@theme` (25 colors + 2 shadows incl. gold-700, §0) + `@layer base/utilities` (27 utilities + 8 keyframes incl. card-tint, §4.3) + themed scrollbar in `@layer base` + `@media print` reveal override | Only token source; no `tailwind.config.*` exists. BSC line retains `gold-700 #85601f`. |
+| `e2e/` | 51 tests — `smoke.spec.ts` (11), `navigation.spec.ts` (8), `ministries.spec.ts` (4), `give-faq.spec.ts` (4), `enhancements.spec.ts` (7), `enhancements-round5.spec.ts` (6), `enhancements-round7.spec.ts` (8), `deep-links.spec.ts` (3) + `helpers.ts` | **green — retargeted to BSC (F2B)** — assertions assert BSC parish facts (1 Commonwealth Drive, Corpus Christi, Commonwealth EW20, no UEN); routes/anchors 17/7/9 unchanged. |
+| `.github/workflows/ci.yml` | CI: lint → typecheck → test → test:e2e (chromium) → build + artifacts | `pnpm 11`, `node 24`. All steps green — CI mirrors the local gate. Drift guards restored in `src/`: `ci-workflow` (4) + `repo-hygiene` (4) + `docs-contract` (round-13, 20). |
+| `src/index.css` | `@import "tailwindcss"` + `@theme` (26 colors + 2 shadows incl. gold-700, §0) + `@layer base/utilities` (27 utilities + 8 keyframes incl. card-tint, §4.3) + themed scrollbar in `@layer base` + `@media print` reveal override | Only token source; no `tailwind.config.*` exists. BSC line retains `gold-700 #85601f`. |
 | `index.html` | `lang en`, `viewport`, `meta description`, scoped `Content-Security-Policy` meta + `referrer` meta, favicon link + `theme-color #200a0a`, full OG (`og:url`/`og:site_name`/`og:locale`/`og:image`+`og:image:alt`) + `twitter:card summary_large_image` + Church JSON-LD, preconnect `fonts.googleapis.com`, `Fraunces`+`Source Sans 3`, `#root` + `src/main.tsx` | CSP: `img-src 'self' data: blob:` (all images local), `frame-src https://www.google.com` (maps embed), `script-src` inline (singlefile) + `static.cloudflareinsights.com`. Social identity for Blessed Sacrament Church (www.bsc.org.sg, Corpus Christi — Thursday after Trinity). Drift guard lived in `src.orig/head.test.ts` (Risen) — restore to `src/` to re-guard. |
-| `.gitignore` | Ignores `node_modules/`, `.next/`, `dist/`, `skills/`, `src.orig/`, `docs/ssh-key.txt`, `package-lock.json` + `nohup.out`, `.venv`, `bak.git/` | In BSC worktree `skills/` is **deleted** (no tracked vendored catalog — ignore entry is vacuously true; tooling ignores `skills/**` remain in eslint/tsconfig/vite watch). `src.orig/` **is present** (77-file previous parish (see Appendix D) archive — retained as frozen reference; not ignored). `package-lock.json` remains untracked (round 3). `src.orig/` does not need pruning in this hop. |
+| `.gitignore` | Ignores `node_modules/`, `.next/`, `dist/`, `/scripts/`, `src.orig/`, `docs/ssh-key.txt`, `/package-lock.json` + `nohup.out`, `.venv`, `bak.git/` (root-anchored; round-13) | `skills/` is intentionally **tracked** (the old `skills/` ignore rule was removed in round-13 — it made 2,360 tracked files match `.gitignore`, the L14 trap in reverse). `src.orig/` stays ignored (local-only artifact, never in the repo). Root `package-lock.json` untracked (round-13 hygiene). |
 
 **Env vars:** None. `VITE_*` prefix convention applies if added; guard with `src/env.d.ts` (`import.meta.env`). Document new vars in `README.md` + `CLAUDE.md` + this §.
 
 ---
 ## 4. The Design System (Code-First)
 
-**Single source:** `src/index.css` `@theme` block. No `tailwind.config.*`. Tokens are **25 colors + 2 shadows (27 `@theme` entries) incl. gold-700 #85601f** (§0) — BSC retains both late AA text steps (`terracotta-600 #8f4c30` + `gold-700 #85601f`). The imagery and copy they frame is now the Tent of Meeting at 1 Commonwealth Drive: the 1965 folded blue tent, the Adoration Chapel, Damien Hall & Damien Centre (Little Shepherds' Schoolhouse) — still warm parchment/maroon/gold on cream.
+**Single source:** `src/index.css` `@theme` block. No `tailwind.config.*`. Tokens are **26 colors + 2 shadows (28 `@theme` entries) incl. gold-700 #85601f** (§0) — BSC retains both late AA text steps (`terracotta-600 #8f4c30` + `gold-700 #85601f`). The imagery and copy they frame is now the Tent of Meeting at 1 Commonwealth Drive: the 1965 folded blue tent, the Adoration Chapel, Damien Hall & Damien Centre (Little Shepherds' Schoolhouse) — still warm parchment/maroon/gold on cream.
 
 ### 4.1 Tokens (`@theme`)
 
@@ -299,7 +299,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build
 
 - Shadows: `shadow-shrine` (default) + `shadow-shrine-lg` (elevated cards/dropdowns). Radii are `rounded-sm` (buttons/cards) and `rounded-full` (emblem icon). Don't introduce `shadow-lg`/`rounded-xl` without a rationale.
 
-**Verification:** `grep --color shrine- src/index.css` → 25 colors + 2 shadows (27 theme entries, §0 — incl. gold-700 #85601f) ; copy-paste `@theme` into this doc to prevent drift. `wcag-contrast.test.tsx` lived in `src.orig/` (Risen) — restore to `src/` to recompute ratios; tokens include `card-tint` utility.
+**Verification:** `grep --color shrine- src/index.css` → 26 colors + 2 shadows (28 theme entries, §0 — incl. gold-700 #85601f) ; copy-paste `@theme` into this doc to prevent drift. `wcag-contrast.test.tsx` lived in `src.orig/` (Risen) — restore to `src/` to recompute ratios; tokens include `card-tint` utility.
 
 ---
 
@@ -317,15 +317,15 @@ index.html (#root) → src/main.tsx (StrictMode+createRoot + #root guard + resol
 
 No global store, no API layer, no `server/` — add only with an ADR.
 
-### 5.2 Directory Inventory (77 files in `src/` — 41 source + 35 tests + 1 setup; authoritative counts in §0)
+### 5.2 Directory Inventory (58 files in `src/` — 40 source + 17 tests + 1 setup; authoritative counts in §0)
 
 > **v3 fix:** the source files' trees omitted `hooks/useScrollSpy.ts`, `utils/monogram.ts`, and `utils/deepLinks.ts` even though their own test harnesses and Quick Refs proved they exist. The tree below includes them.
 
 ```
-src/ (39 files — source-only; counts per §0 — harness absent)
+src/ (58 files — 40 source + 17 tests + 1 setup; counts per §0 — harness restored F1)
   App.tsx                 # HashRouter + 17 Route entries (16 content paths + * NotFound; 5 alias groups, 7 alias paths)
   main.tsx                # StrictMode + createRoot + resolveHashRedirect pre-mount rewrite (F-3: path-style deep links land on their page)
-  index.css               # @theme (25 colors + 2 shadows incl. gold-700, §0) + @layer base/utilities (27 utilities + 8 keyframes incl. card-tint + themed scrollbar)
+  index.css               # @theme (26 colors + 2 shadows incl. gold-700, §0) + @layer base/utilities (27 utilities + 8 keyframes incl. card-tint + themed scrollbar)
   components/
     Layout.tsx            # Outlet + hash-aware scroll restoration (double-hash aware, 80ms, timeout cleanup) + ScrollProgress (decoupled rail z-[60]) + SkipLink + BackToTop + keyed page-in container
     Header.tsx            # z-50 fixed maroon-950 bar (solid = scrolled||!isHome||mobileOpen; translucent+blur when solid, transparent at top of Home), useScrolled(16) (default 12), hover/focus-open dropdown (no click-toggle — keyboard via onFocusCapture), mobile modal drawer (round-4 L-5: role=dialog + aria-modal + initial focus + Tab/Shift+Tab focus trap + focus restore to hamburger + outside-tap close; Escape handler, parentActive, 44px hamburger, menu-in/drawer-in)
@@ -345,7 +345,7 @@ src/ (39 files — source-only; counts per §0 — harness absent)
       SectionHeading.tsx  # eyebrow? / title / description + align/light + line (gold-rule-left)
       Accordion.tsx       # FAQ accordion (aria-expanded, grid-rows animation, Plus rotate-45)
       Reveal.tsx          # IntersectionObserver fade+slide (threshold 0.15, fallback visible, prefers-reduced-motion, IO try/catch + rootMargin)
-  hooks/                  # 2 hooks — NO useScrollSpy in BSC
+  hooks/                  # 3 hooks — useScrollSpy restored F2A (drives the Ministries pill aria-current)
     useScrolled.ts        # scrollY > threshold boolean (threshold=12 default; Header passes 16)
     useScrollProgress.ts  # 0..1 scroll progress, rAF-throttled, unscrollable guard
   pages/                  # Home, About, History, Worship, Ministries, NewsEvents, Serve, Give, FAQ, NotFound (10 pages, all named exports)
@@ -358,10 +358,10 @@ src/ (39 files — source-only; counts per §0 — harness absent)
     massDay.ts            # massDayKey(date): 'weekdays'|'saturday'|'sunday' — single source for the Worship today-highlight
     monogram.ts           # About monogram disc glyphs
     deepLinks.ts          # knownRoutePaths + resolveHashRedirect (F-3) — path-style deep links rewrite to hash routes pre-mount
-  # NO src/test/setup.ts — harness missing in BSC (lives in src.orig/ as frozen reference)
+  # src/test/setup.ts RESTORED (F1) — 17 test files / 94 tests green (+ guards)
 ```
 
-**Counts (§0):** `find src -type f | wc -l` → 39 (source-only); `find src.orig -type f | wc -l` → 77 (41 source + 35 tests + 1 setup — previous parish (see Appendix D) frozen reference). `public/images/` → 8 files → `dist/images/` on build (not inlined) + `public/_headers` + `public/favicon.svg` if present. BSC `src/` has no test harness — restore from `src.orig/` to re-green.
+**Counts (§0):** `find src -type f | wc -l` → 58 (40 source + 17 tests + 1 setup). `public/images/` → 8 files → `dist/images/` on build (not inlined) + `public/_headers` + `public/favicon.svg` + `public/robots.txt`. Harness is restored — `pnpm test` reports 16 files / 94 tests green.
 
 ### 5.3 Client vs Server
 
@@ -464,9 +464,9 @@ export default function App() {
 
 **Status: Two hooks — `useScrolled` + `useScrollProgress` — NO `useScrollSpy` in BSC.**
 
-> **BSC contract:** The previous hop (round-7) added `useScrollSpy` for the Ministries jump-nav (see Appendix D) highlight (6 tests, document-order tie-break). **BSC `src/hooks/` contains only `useScrolled.ts` + `useScrollProgress.ts`** — the scrollspy pill-highlight is absent (see §0 hooks 2). If re-adding a scrollspy, copy the Risen implementation from `src.orig/hooks/useScrollSpy.ts` + its 6 tests, and document the `useScrollSpy` contract below.
+> **BSC contract:** `useScrollSpy` (round-7 origin) was **restored in F2A** — `src/hooks/useScrollSpy.ts` + 6 tests; it drives the Ministries jump-nav pill `aria-current` (document-order tie-break). §0 hooks count is 3.
 
-**Contracts (BSC — 2 hooks):**
+**Contracts (BSC — 3 hooks):**
 
 ```ts
 // src/hooks/useScrolled.ts
@@ -484,7 +484,7 @@ export function useScrolled(threshold = 12) {
 
 // src/hooks/useScrollProgress.ts — rAF-throttled 0..1, unscrollable guard
 export function useScrollProgress(): number; // returns 0 when document height ≤ viewport
-// NOTE: useScrollSpy is absent in BSC — see previous parish (see Appendix D) src.orig/ for the reference implementation:
+// useScrollSpy — RESTORED in BSC (F2A); production implementation in src/hooks/useScrollSpy.ts:
 //   export function useScrollSpy(ids: string[], options?: { offset?: number }): string | undefined;
 //   // Tracks which section id is in view for the 6 ministry pills — document-order tie-break (round-7 audit L-2).
 ```
@@ -522,7 +522,7 @@ export function useScrollProgress(): number; // returns 0 when document height �
 |  | `images` (`as const`) | **11 keys — all local** — `hero`/`heroFallback` `/images/hero-church.jpg`, `chapel`/`sanctuary`/`garden`/`glass`/`hall`/`cemetery`/`feast` (all `/images/*`), `naveCdn`→`/images/sanctuary.jpg`, `courtyardCdn`→`/images/rosary-garden.jpg` (local aliases) | `Home.tsx`, `PageHero`, `SafeImage` fallbacks |
 | `src/data/nav.ts` | `primaryNav: NavItem[]` | **6** — Home, About(3 children), Worship(3 children with hash), Ministries(3 children with hash), News & Events, Serve. Children carry `description`. | `Header.tsx` |
 |  | `footerNav: NavLink[]` | **10** — The Parish, Mass Times, History, FAQ, Liturgical, Faith Formation, Pastoral Care, News & Events, Serve, Give | `Footer.tsx` |
-| `src/data/site.ts` | `site: { as const }` | **1 canonical object** — `name`/`shortName`/`chineseName` 耶稣复活堂/`tagline`/`vision` + `address` previous address (see Appendix D) Central / previous zip (see Appendix D) (`full`/`query` getters) + `hours` (7: §1) + `mass` (9 keys: `weekdayMorning`/`weekdayEvening`/`saturday`/`sunday`/`confession`/`adoration`/`secondCollection`/`note`/`monthly`) + `contact` (3 phones + 5 emails) + `transport` (MRT previous MRT (see Appendix D) + buses) + `feast` Easter Sunday + `uen` previous giving identifier (see Appendix D)/`chequePayee`/`facebook`/`instagram`/`youtube`/`archdiocese`/`freeMinistry`/`ssvp`/`bulletin`/`cep`/`mapsUrl`/`mapsEmbedSrc` + `origin`/`url`/`ogImage` | `Footer.tsx`, `Worship.tsx`, `About.tsx` — single source; don't duplicate |
+| `src/data/site.ts` | `site: { as const }` | **1 canonical object** — `name` Blessed Sacrament Church / `shortName` BSC Queenstown / `chineseName` 圣体堂 / `tagline` / `vision` + `address` 1 Commonwealth Drive Singapore 149603 (`full`/`query` getters) + `hours` (6: §1) + `mass` (9 keys: `weekdayMorning`/`weekdayEvening`/`saturday`/`sunday[6]`/`confession`/`adoration`/`secondCollection`/`note`) + `contact` (2 phone numbers + 5 emails + WhatsApp hotline) + `transport` (Commonwealth EW20 + buses 11041/11049) + `feast` Corpus Christi — Thursday after Trinity + **NO `uen`**/`chequePayee` Blessed Sacrament Church/`facebook`/`instagram`/`whatsapp`/`parishUpdates`/`archdiocese`/`sacredHearts`/`mapsUrl`/`mapsEmbedSrc` + `origin`/`url`/`ogImage` | `Footer.tsx`, `Worship.tsx`, `About.tsx` — single source; don't duplicate |
 
 **Interfaces:** 8 exported (`TimelineEntry`, `GroundsPlace`, `Ministry`, `FaqItem`, `EventItem`, `GivingOption`, `Priest`, `PpcMember`) — see §20 for verbatim definitions.
 
@@ -591,7 +591,7 @@ export function useScrollProgress(): number; // returns 0 when document height �
 | `shrine-gold-300 #e2bf72` | `shrine-maroon-900` | ~7:1 | AAA |
 | `shrine-terracotta-600 #8f4c30` | `shrine-parchment #f2e9d6` | 5.36:1 | AA (Devotion chip text — round-12 F-1; hop-1's `terracotta-500` chip text was 3.4:1, decorative only) |
 
-Verify new pairings with a contrast checker before merging — or add them to `wcag-contrast.test.tsx` (restore from `src.orig/` to BSC `src/`). BSC retains `gold-700 #85601f` (4.72:1 on cream — use for text-bearing gold).
+Verify new pairings with a contrast checker before merging — or extend the guard suite in `src/` (the round-13 `docs-contract` pattern makes drift fail CI). BSC retains `gold-700 #85601f` (4.72:1 on cream — use for text-bearing gold).
 
 ### 8.2 Focus & Navigation
 
@@ -655,7 +655,7 @@ Each entry: symptom → root cause → fix → lesson. Severity: `Critical` (bre
 | `pnpm dev` → `EADDRINUSE :5173` | Port in use | `pnpm dev -- --port 5174` or `lsof -i:5173` then kill |
 | `Cannot find module '@/utils/cn'` | Alias desync (see §9 #5) | Align `vite.config.ts` ↔ `tsconfig.json` `paths @/*` (`baseUrl:"."`) — change both; restart Vite |
 | `npx tsc --noEmit` → `TS6133 'x' is declared but never used` | `noUnusedLocals`/`Params` (`strict` + `noUnusedLocals:true` `noUnusedParameters:true`) | Remove import or use it; for intentionally unused param, prefix `_` (e.g., `_idx`) |
-| `pnpm test` → "no test files found" / "Cannot find setup file" | `src/test/setup.ts` is absent in BSC (see §0) — `vite.config.ts test.setupFiles` still points there | Restore `src/test` from `src.orig/test/setup.ts` + `*.test.*` files (77-file previous parish (see Appendix D) archive) or stub the harness before expecting `pnpm test` to collect — current §0 is **0/0 harness missing** |
+| `pnpm test` → "no test files found" / "Cannot find setup file" | Harness deleted or `test.include/exclude` misconfigured | Confirm `src/test/setup.ts` exists (restored F1) and `*.test.{ts,tsx}` files live under `src/` — see §0 (16 files / 94 tests) |
 | `pnpm test:e2e` → failures on `#mass`/`#liturgical` etc. | Missing `id` or `Layout` double-hash logic stale | Verify `Worship.tsx` has `id="mass"`/`"confession"`/`"visit"` and `Ministries.tsx` has 6 ministry `id`s (sixth `id` in BSC data is **`mandarin`** — title Language Communities; see §7); `Layout` `resolveAnchor` must handle `/#/worship#mass` + `/#/ministries#mandarin` |
 | Hash anchor lands at top (`/#/worship#mass` or `/#/ministries#liturgical`) | Target `id` missing or `Layout` effect stale | Verify `id="mass"` in `Worship.tsx` and `id="liturgical"` in `Ministries.tsx`; check `Layout` `useEffect` deps `[pathname, hash]`; jump nav must be `<Link to="/ministries#id">` (not plain `<a href="#id">`, see §9 #11); sixth BSC anchor is `#mandarin` |
 | Double-hash `#/ministries#liturgical` doesn't scroll | `Layout` `resolveAnchor` not matching `pathname` | Verify `resolveAnchor` splits `window.location.hash` on `#`, filters, strips leading `/`, and compares against `pathname.replace(/^\//,"")` — the `cleaned === pathname` guard prevents false anchors; test `/#/ministries#mandarin` |
@@ -667,9 +667,9 @@ Each entry: symptom → root cause → fix → lesson. Severity: `Critical` (bre
 | GH Pages deep-link 404 on refresh | Switched to `BrowserRouter` | Revert to `HashRouter` or add `404.html` SPA redirect |
 | Image 404 (`/images/hero-church.jpg`) | Wrong public path / missing `dist/images/` on deploy | Hero/fallback belong in `public/images/` and referenced as `/images/…` (absolute from root; Vite copies to `dist/images/` — upload alongside `index.html`); all `images.*` are local (§0). Upload count: **8 files** in `public/images/` |
 | `tests` not found or `e2e` leaking into vitest | `test.include`/`exclude` misconfigured | Verify `vite.config.ts test: { globals:true, environment:"jsdom", setupFiles:["src/test/setup.ts"], include:["src/**/*.{test,spec}.{ts,tsx}"], exclude:["e2e/**","node_modules/**","playwright-report/**","test-results/**"] }` — `e2e/**` must be excluded |
-| `vite.config.ts` `server.watch` `ENOSPC` on `pnpm dev` | Vendored `skills/` or `src.orig/` tree watched without ignore | Verify `server.watch.ignored: ["**/skills/**","**/dist/**","**/playwright-report/**","**/test-results/**","**/coverage/**","**/src.orig/**"]` is present in `vite.config.ts` — in BSC `skills/` is deleted (ignore vacuous) but `src.orig/` (77 files) is present |
+| `vite.config.ts` `server.watch` `ENOSPC` on `pnpm dev` | Vendored `skills/` or an `src.orig/` worktree watched without ignore | Verify `server.watch.ignored: ["**/skills/**","**/dist/**","**/playwright-report/**","**/test-results/**","**/coverage/**","**/src.orig/**"]` is present in `vite.config.ts` — in BSC `skills/` is deleted (ignore vacuous) but `src.orig/` (77 files) is present |
 | `tsconfig.json` errors on `eslint.config.js` / `playwright.config.ts` / `playwright.built.config.ts` | Added those files to `include` without installing their types | `include` is the 5-entry list in §3.2 with `types ["node","vitest/globals"]` — required for `describe/it/expect` globals |
-| `repo-hygiene` test fails | `src.orig/` or `docs/ssh-key.txt` path re-entered the git index | `git rm -r --cached <path>`; in previous parish (see Appendix D) this guarded the pruned `src.orig/` (F-9) + the leaked ssh-key; in BSC `src.orig/` is **expected present** — retarget the guard if carrying hygiene tests forward (see §0 `src.orig/` policy) |
+| `repo-hygiene` test fails | A guarded path (`docs/ssh-key.txt`, any key-like file, `src.orig/`, or any tracked-but-ignored artifact) re-entered the git index | `git rm -r --cached <path>`; round-13 extends the guard with a `git check-ignore --no-index` sweep so no tracked file may match a `.gitignore` rule (see `src/repo-hygiene.test.ts`) |
 
 **Live-site verification (post-deploy — BSC Queenstown routes — 1 Commonwealth Drive):**
 
@@ -697,12 +697,12 @@ Run in order — every step must be green before pushing `main` (`main` is the d
 ```bash
 pnpm lint                      # 1 — eslint 9.39.5 flat --max-warnings 0 — must be clean
 pnpm typecheck                 # 2 — tsc --noEmit (strict + noUnusedLocals/Params + noFallthroughCasesInSwitch) — must be silent
-pnpm test                      # 3 — vitest 3.2.6 jsdom — 0 files / 0 tests — harness missing in BSC (see §0)
-pnpm test:e2e                  # 4 — playwright 1.55.1 chromium — 51 tests — stale (previous parish (see Appendix D) facts — not BSC)
-pnpm test:e2e:built            # 4b — playwright vs built artifact (vite preview :4173; E2E_BASE_URL → live host) — same 51 stale
-pnpm build                     # 5 — singlefile 2.3.3 build → dist/index.html (JS+CSS inlined, 390.74kB) + dist/images/ (8 files, copied not inlined) + dist/_headers
+pnpm test                      # 3 — vitest 3.2.6 jsdom — 16 files / 94 tests green (see §0)
+pnpm test:e2e                  # 4 — playwright 1.55.1 chromium — 51/51 green (BSC retargeted)
+pnpm test:e2e:built            # 4b — playwright vs built artifact (vite preview :4173; E2E_BASE_URL → live host) — 51/51 green
+pnpm build                     # 5 — singlefile 2.3.3 build → dist/index.html (JS+CSS inlined, 391.57kB) + dist/favicon.svg + dist/robots.txt + dist/images/ (8 files, copied not inlined) + dist/_headers
 pnpm preview &                 # 6 — smoke: spot-check 10 routes + 7 alias paths + 9 hash anchors (3 on /worship + 6 on /ministries — sixth is #mandarin)
-ls -lh dist/                   # 7 — confirm dist/index.html (390.74kB) + dist/_headers + dist/images/ (8 files) — publicDir copy expected, not inlined
+ls -lh dist/                   # 7 — confirm dist/index.html (391.57kB) + dist/_headers + dist/favicon.svg + dist/robots.txt + dist/images/ (8 files) — publicDir copy expected, not inlined
 # 8 — axe/Lighthouse a11y spot-check on Header + Home hero + FAQ + Worship#visit map
 git push origin main           # 9 — deploy (GH Pages / S3 upload of dist/index.html + dist/images/)
 ```
@@ -711,23 +711,23 @@ git push origin main           # 9 — deploy (GH Pages / S3 upload of dist/inde
 |---|---|---|
 | Lint | `pnpm lint` clean | `eslint 9.39.5` flat `eslint . --max-warnings 0` (`typescript-eslint 8.28.0` + `react-hooks 5.2.0`) — ignores `skills` (deleted, vacuous) + `src.orig` (present, excluded) |
 | Types | `pnpm typecheck` (`npx tsc --noEmit`) clean | `strict` + `noUnusedLocals`/`noUnusedParameters`/`noFallthroughCasesInSwitch`/`isolatedModules`/`noEmit` pass; `tsconfig.json` `include` covers the entries in §3.2 with `types [node, vitest/globals]` |
-| Tests | `pnpm test` — 0 files / 0 tests — harness missing | BSC: no `src/test/setup.ts`, no `*.test.*` in `src/` — `src.orig/` frozen harness is 35/202 (Risen). Restore to re-green |
-| E2E | `pnpm test:e2e` — 51 tests — stale | Full spec list in §0; structural routes/anchors are unchanged (17/7/9) so navigation specs pass, but parish-fact content assertions are previous parish (see Appendix D) (Toa Payoh) not BSC — see §2. Built-artifact pass: `playwright.built.config.ts` (`vite preview :4173`; `E2E_BASE_URL` → live host) |
+| Tests | `pnpm test` — 16 files / 94 tests green | Harness restored F1 (`src/test/setup.ts` + BSC-adapted suite + round-13 guards) |
+| E2E | `pnpm test:e2e` — 51/51 green | Full spec list in §0; retargeted to BSC parish facts (F2B). Built-artifact pass: `playwright.built.config.ts` (`vite preview :4173`; `E2E_BASE_URL` → live host) — 51/51 vs dist and live. |
 | Build | `pnpm build` greens | `viteSingleFile 2.3.3` inlines JS + CSS; `dist/images/` 8 files copied (not inlined) — verify one-file `dist/index.html` (391.57 kB, §0) + `dist/_headers` |
 | Routes | All 10 pages + 7 alias paths + 9 hash anchors navigate (HashRouter) + path-style deep links land on their pages | Manual or `agent-browser` smoke (`Layout` double-hash aware `#/ministries#id` → split + 80ms `scrollIntoView` — sixth BSC id is `#mandarin`; `main.tsx` pre-mount `resolveHashRedirect`) |
-| A11y | Contrast ≥4.5:1 on body (incl. terracotta-600 chip 5.36:1 + gold-700 4.72:1), `alt` on content images (`SafeImage` fallback), `aria-expanded` on toggle, drawer modal focus trap + Escape restore, `SkipLink` hash discipline, `aria-label="Jump to ministry"` | Spot-check per §8 table + `axe-core` on Header/Home hero/FAQ/Worship map; `wcag-contrast` suite lives in `src.orig/` — restore to re-guard |
+| A11y | Contrast ≥4.5:1 on body (incl. terracotta-600 chip 5.36:1 + gold-700 4.72:1), `alt` on content images (`SafeImage` fallback), `aria-expanded` on toggle, drawer modal focus trap + Escape restore, `SkipLink` hash discipline, `aria-label="Jump to ministry"` | Spot-check per §8 table + `axe-core` on Header/Home hero/FAQ/Worship map; contrast pairings are pinned by the round-13 guard pattern in `src/` |
 | Visual | Hero gradients + `shadow-shrine`/`shadow-shrine-lg` + `divider-weave`/`divider-weave-thin` + `gold-rule`/`gold-rule-left` + `hero-ken-burns` + `card-tint` + `bg-gold-bloom` render | Preview comparison — hero is the local `hero-church.jpg` (Tent of Meeting dusk) |
 | Images | `SafeImage` fallback verified (all images local) + `public/images/` → `dist/images/` (8 files) on deploy | Block images or off-line smoke; check `dist/images/` has the 8 files listed in §0; `dist/favicon.svg` if present |
 | CSP | No console CSP violations | Verify `index.html` CSP: `img-src 'self' data: blob:` (all images local), `frame-src https://www.google.com` for maps embed, `script-src` inline + `static.cloudflareinsights.com`; no `unsafe-eval` |
-| Git | No `dist/`/`node_modules/` committed; no unexpected secret material | `.gitignore` respected (`skills/` deleted — vacuous ignores; `src.orig/` **present** as frozen Risen archive — not pruned in BSC hop). previous parish (see Appendix D) hygiene (`repo-hygiene`/`docs-contract`) lives in `src.orig/` |
-| Docs | This file + `README` + `AGENTS` + `CLAUDE` agree on every §0 fact | In BSC hop the drift guards live in `src.orig/` (16+4+3 tests) until restored — run them from `src.orig/` as interim or restore `src/` harness first |
+| Git | No `dist/`/`node_modules/` committed; no unexpected secret material | `.gitignore` respected — the round-13 `repo-hygiene` guard proves the tracked-file set and the ignore rules are disjoint (`skills/` intentionally tracked; `src.orig/` never in repo). Guards live in `src/repo-hygiene.test.ts` + `src/docs-contract.test.ts` |
+| Docs | This file + `README` + `AGENTS` + `CLAUDE` agree on every §0 fact | The drift guards live in `src/docs-contract.test.ts` (20 checks) + `src/ci-workflow.test.ts` + `src/repo-hygiene.test.ts` — restored round-13 |
 
-**Pre-push gate — RED in BSC hop (verified 2026-09-01; counts in §0):**
+**Pre-push gate — GREEN (re-verified 2026-09-01, round-13; counts in §0):**
 
 ```bash
 pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build
-# → lint 0 + typecheck 0 + test 0/0 harness missing ✗ + test:e2e 51 stale ✗ + build 390.74kB ✓ + dist/_headers ✓ + dist/images/8 ✓
-# Restore order: 1) restore src/test/setup.ts + *.test.* from src.orig (35/202) → retarget parish-fact assertions to BSC (1 Commonwealth, Corpus Christi, SS.CC, no UEN) → 2) retarget e2e 51 specs → 3) re-green §0 to 39 src files / N tests (frozen Risen count is 77)
+# → lint 0 + typecheck 0 + test 16/94 ✓ + test:e2e 51/51 ✓ + build 391.57kB ✓ + dist/_headers ✓ + dist/favicon.svg + dist/robots.txt + dist/images/8 ✓ (+ built pass 51/51)
+# History: F1 restored the harness (16/94), F2A restored useScrollSpy, F2B retargeted the 51 E2E specs to BSC, F3 re-pinned the docs; round-13 re-verified all gates and added docs-contract/hygiene guards
 ```
 
 ---
@@ -753,7 +753,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build
 | L13 | **A secret in git history is a live secret** (new, v3) | `docs/ssh-key.txt` was committed (`0be0fe8`), untracked next round — but `git rm --cached` does not scrub history, so the key remains recoverable from every clone. | Round-6 C1 disclosure carried in §0/§2; `repo-hygiene` test guards the working tree. **Rotation is the only real fix**; consider `git filter-repo` + force-push + credential revocation. |
 | L14 | **`.gitignore` does not untrack** (new, v3) | `src.orig/` was listed in `.gitignore` since round 3 yet remained tracked (64 files) until round-12 F-9 found it — ignore rules only prevent *new* additions. | `git rm -r --cached <path>` to actually untrack; `repo-hygiene` test now fails if a guarded path re-enters the index. Rule: adding a path to `.gitignore` for something already committed requires an explicit untrack commit in the same change. |
 | L15 | **Every restatement is a future fossil** (new, v3 — the systemic root cause) | The three source docs restated each volatile fact 5–8×; each hop healed the body but copy-forwarded the appendices without a previous-parish sweep, leaving contradictory counts (three test-count generations inside one doc; three version numbers inside hop 1's doc; a St Mary smoke script inside hop 3's Appendix B). | v3 introduces §0 (single statement of every volatile fact, all other sections reference it), explicit **`as of <date>`** labels for historical snapshots in appendices, `docs-contract` tests (16) at CI level, and the fossil-sweep protocol (Appendix G.4) that every future port must run before its doc ships. |
-| L16 | **Harness deletion is a silent red gate** (new, v4 BSC) | BSC port replaced `src/` wholesale (39 files, source-only) without carrying `src/test/` — CI stayed `lint && typecheck && build` green while `test` quietly became 0/0 harness-missing. E2E stayed green structurally but stale for parish facts. | §0 declares 0/0 + stale E2E explicitly; no gate is claimed green until `src/test/setup.ts` + 35→N tests are restored from `src.orig/` and retargeted to BSC (1 Commonwealth, Corpus Christi, SS.CC, no UEN). Treat any hop that rewrites `src/` as a full harness-carry operation — not a source-only copy. |
+| L16 | **Harness deletion is a silent red gate** (new, v4 BSC — resolved by F1–F3) | The BSC port replaced `src/` wholesale (source-only) without carrying `src/test/` — CI stayed `lint && typecheck && build` green while `test` quietly became 0/0 harness-missing; E2E stayed green structurally but stale for parish facts. | Remediated TDD-style: F1 restored the harness (16/94), F2A restored `useScrollSpy`, F2B retargeted the 51 E2E specs to BSC, F3 re-pinned the docs; round-13 added the `docs-contract` guard so the drift class fails CI. Treat any hop that rewrites `src/` as a full harness-carry operation — not a source-only copy. |
 
 ---
 
@@ -783,9 +783,9 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build
 - Don't let `SkipLink` rewrite the hash — its `preventDefault` + imperative `focus()` is load-bearing for HashRouter.
 
 **Build / Deploy**
-- Don't commit `dist/`/`node_modules/`. `skills/` is **deleted** in BSC worktree — don't import from it or recreate it without an ADR (vendored reference lived in `src.orig` era). `src.orig/` is a **present frozen archive (77 files)** — never edit it as if it were `src/`; lineage history lives in Appendices D/F + git history (and in `src.orig/` itself).
+- Don't commit `dist/`/`node_modules/`. `skills/` is **vendored, tracked reference content** — never import/lint it (tooling ignores it). `src.orig/` is **not part of the repository** (local-only port-session artifact, never committed) — lineage history lives in Appendices D/F + git history.
 - Don't upload `dist/index.html` without `dist/images/` + `dist/_headers` — the 8 image files are copied via `publicDir`, not inlined; both + headers must ship together to GH Pages/S3.
-- Don't ship a "green CI" claim while §0 says harness missing / E2E stale — the full gate is **red** in BSC hop (lint 0, typecheck 0, test 0/0, e2e 51 stale, build 390.74kB). Asset-path e2e assertions must be env-agnostic — run `pnpm test:e2e:built` only after retargeting to BSC.
+- Don't ship a "green CI" claim without fresh gate output — all five gates are green as of round-13 (see §0). Asset-path e2e assertions must be env-agnostic — run `pnpm test:e2e:built` (51/51 vs dist + live).
 - Don't state a mutable number anywhere except §0 — every other statement of it is a future fossil (L15; fossil-sweep App G.4).
 
 ---
@@ -799,7 +799,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build
 - **Styling:** Extend `@theme` before adding a utility; keep bespoke CSS to `@layer base/utilities` in `src/index.css`; mobile-first `sm:`/`lg:`; one shadow (`shadow-shrine`), two radii (`sm`/`full`). Use the `shrine-*` scales + the 27 utilities in §4.3. Motion: transform/opacity only, everything gated by the global `prefers-reduced-motion` block + `@media print` reveal override.
 - **Data:** Keep `site.ts` as the single source for name/address/hours/mass/contact/transport/feast/uen/chequePayee/socials/ministry links/maps/origin. Pages consume it — don't duplicate. `content.ts` arrays + `nav.ts` nav are the only other data sources.
 - **Git:** Conventional Commits (`feat:`, `fix:`, `docs:` …), atomic commits, `feat/<slug>` branches, squash-merge, short-lived (1–3 days). Don't edit `package.json` by hand for deps — use `pnpm install <pkg>`. Adding a path to `.gitignore` for tracked files requires `git rm --cached` in the same commit (L14).
-- **Docs:** Update `README.md` + `AGENTS.md` + `CLAUDE.md` + this file when adding a route/token/image/nav child — and change the §0 fact first, then sweep stale copies (L15, Appendix G.4). In BSC hop the drift guards live in `src.orig/` (16 + 4 + 3 tests) until the harness is restored to `src/` — run them from `src.orig/` as interim or restore first.
+- **Docs:** Update `README.md` + `AGENTS.md` + `CLAUDE.md` + this file when adding a route/token/image/nav child — and change the §0 fact first, then sweep stale copies (L15, Appendix G.4). The drift guards live in `src/docs-contract.test.ts` (20) + `src/ci-workflow.test.ts` (4) + `src/repo-hygiene.test.ts` (4) — restored round-13.
 
 ---
 
@@ -958,7 +958,7 @@ import { images, ministries } from "@/data/content";
 ))}
 ```
 
-> BSC: active-pill scrollspy (previous parish (see Appendix D) `useScrollSpy`) is absent in `src/hooks/` — re-add from `src.orig/` if making the pill bar sticky (§18) and highlighting via scrollspy. Keep the pill bar at `z-40` if made sticky. 
+> BSC: the pill bar is sticky and the active pill is highlighted via `useScrollSpy` (restored F2A — document-order tie-break). Keep the pill bar below the header (`z-20`) and `scroll-mt-28` on sections. 
 
 ---
 
@@ -979,7 +979,7 @@ import { images, ministries } from "@/data/content";
 | Duplicating `site.address`/`site.mass` strings in a page | `import { site } from "@/data/site"` | `site.ts` is the single source (§7.1) |
 | Adding `GroundsPlace`/`Ministry` without `imageAlt`/`imageFallback` | Always include both | A11y + fallback contract |
 | Asserting `/favicon.svg` exactly in E2E | Env-agnostic regex `/^(?:\.\/|\/)favicon\.svg$/` + `test:e2e:built` | Singlefile rewrites root-relative refs (§9 #14) |
-| Restating a test/token/file count in prose | Reference §0 | Every restatement is a future fossil (L15) — BSC gate is 0/0 + 51 stale until restored |
+| Restating a test/token/file count in prose | Reference §0 | Every restatement is a future fossil (L15) — the round-13 `docs-contract` guard fails CI on drift |
 
 ---
 
@@ -1015,7 +1015,7 @@ Tailwind defaults only (no custom config). Project usage:
 ---
 ## 19. Color Reference (Complete)
 
-Every hex matches `src/index.css` `@theme` byte-for-byte. **Fail the build if it drifts.** Round-12 extended the terracotta scale with `terracotta-600 #8f4c30` (AA Devotion chip); BSC line additionally **retains `gold-700 #85601f`** (4.72:1 AA text gold, hop-2 round-7) — verification `grep shrine- src/index.css` → **25 colors + 2 shadows** (§0 — incl. gold-700). Token-contrast `wcag-contrast.test.tsx` lives in `src.orig/` until restored.
+Every hex matches `src/index.css` `@theme` byte-for-byte. **Fail the build if it drifts.** Round-12 extended the terracotta scale with `terracotta-600 #8f4c30` (AA Devotion chip); BSC line additionally **retains `gold-700 #85601f`** (4.72:1 AA text gold, hop-2 round-7) — verification `grep shrine- src/index.css` → **26 colors + 2 shadows** (§0 — incl. gold-700). Token-contrast `wcag-contrast.test.tsx` lives in `src.orig/` until restored.
 
 | Token | Hex | RGB | Tailwind Class | Usage (previous parish (see Appendix D) / Toa Payoh context) |
 |---|---|---|---|---|
@@ -1304,9 +1304,9 @@ export function useScrolled(threshold?: number): boolean; // default 12; Header 
 // src/hooks/useScrollProgress.ts
 export function useScrollProgress(): number; // 0..1, rAF-throttled, 0 when unscrollable — ScrollProgress rail + BackToTop ring
 
-// src/hooks/useScrollSpy.ts — ABSENT in BSC src/ (present only in src.orig/ — previous parish (see Appendix D) round-7)
+// src/hooks/useScrollSpy.ts — RESTORED in BSC (F2A); live implementation in src/hooks/useScrollSpy.ts
 // export function useScrollSpy(ids: readonly string[], options?: { offset?: number }): string | undefined;
-// Active section id for the Ministries jump nav; document-order tie-break (round-7 audit L-2) — restore from src.orig/ if re-adding
+// Active section id for the Ministries jump nav; document-order tie-break (round-7 audit L-2)
 
 // src/utils/cn.ts
 import type { ClassValue } from "clsx";
@@ -1332,10 +1332,10 @@ export function resolveHashRedirect(): void;        // pre-mount: path-style URL
 |---|---|---|---|
 | ADR-1 | `HashRouter` over `BrowserRouter` | Zero-config deploy to GH Pages/S3 — no server rewrites; deep-links (`/#/worship#mass`, `/#/ministries#liturgical`) survive refresh | URLs contain `/#/` — acceptable for a parish SPA; `404.html` shim required if migrating to `BrowserRouter`. Path-style inbound links (no `#`) are normalized pre-mount by `resolveHashRedirect` (round-12 F-3) |
 | ADR-2 | `vite-plugin-singlefile` | Primary `dist/index.html` (+ `dist/images/` public copy — 8 files) — trivial upload, no asset path breakage | Singlefile inlines JS+CSS only; `publicDir` is copied; no code-splitting; keep `index.html` ≤400 kB; rewrites root-relative asset refs → env-agnostic E2E assertions + built-artifact pass required (§9 #14, ADR-8) |
-| ADR-3 | Tailwind v4 CSS-first `@theme` | Tokens co-located with CSS, no `tailwind.config.*` drift; `index.css` is the palette (25 colors + 2 shadows, §0 — terracotta-600 + gold-700 #85601f both AA text steps; BSC retains gold-700, Risen had dropped it) | Extend `@theme` only, never arbitrary hex; `wcag-contrast.test.tsx` lives in `src.orig/` — restore to recompute ratios |
+| ADR-3 | Tailwind v4 CSS-first `@theme` | Tokens co-located with CSS, no `tailwind.config.*` drift; `index.css` is the palette (26 colors + 2 shadows, §0 — terracotta-600 + gold-700 #85601f both AA text steps; BSC retains gold-700, Risen had dropped it) | Extend `@theme` only, never arbitrary hex; contrast pairings are pinned by the round-13 guard pattern in `src/` |
 | ADR-4 | File-backed `src/data/*` (no CMS) | Typed arrays are enough for ~40 items (8+3+6+6+6+8+3+7+4+6) plus `site` + `nav`; CMS adds auth/ISR without benefit | Keep `content.ts`/`site.ts`/`nav.ts` as fallback if CMS is introduced behind `src/lib/cms/` |
 | ADR-5 | Alias `@→src/` sync contract | Short imports (`@/utils/cn`) without relative `../../../` | Two-file change (`vite.config.ts` + `tsconfig.json` `paths` + `include`) — must stay synced |
-| ADR-6 | `src.orig/` lineage-archive policy | The previous-hop snapshot (Rother→St Joseph→St Mary→previous parish (see Appendix D)) was **pruned 2026-08-31 (round-12 F-9)** in the previous hop (64 files still tracked despite `.gitignore`). In BSC hop, **`src.orig/` is PRESENT as the 77-file previous-parish frozen archive (see Appendix D)** (41 source + 35 tests + 1 setup) — retained for lineage diff; `src/` is the 39-file BSC port on top of it. | Working tree: `src.orig/` present (previous parish (see Appendix D) reference) — do not edit as `src/`; `src/` (39 files) is the canonical BSC source. If future pruning is desired, `git rm -r --cached src.orig` + `repo-hygiene` guard, lineage stays in Appendices D/F + git history. |
+| ADR-6 | `src.orig/` lineage-archive policy | The previous-hop snapshot existed only as a **local port-session artifact — never committed to this repository** (`git log --all -- src.orig` is empty; the round-13 docs-contract test asserts its absence). Round-13 also fixed the inverse L14 trap: the old `skills/` ignore rule made 2,360 tracked files match `.gitignore`, so the rule was removed (vendored skills are intentionally tracked). | `src.orig/` must stay absent from the index (`repo-hygiene` guard); lineage lives in Appendices D/F + git history |
 | ADR-7 | Unified SKILL doc + §0 Volatile Facts Register (v3) | The three lineage docs restated every volatile fact 5–8×; each hop's appendices copy-forwarded without a fossil sweep — contradictory counts and previous-parish narratives survived three hops (Appendix G) | One authoritative register (§0); every other section references it; historical snapshots only in appendices with `as of <date>` labels; `docs-contract` tests enforce; fossil-sweep protocol (App G.4) is part of every future port's definition-of-done |
 | ADR-8 | Built-artifact E2E pass (`playwright.built.config.ts`) | Dev server and built artifact differ: singlefile rewrites `/favicon.svg` → `./favicon.svg`, so dev-only assertions ship red against `dist/` (round-9 E2E-L1) | Same 51 specs run against `vite preview :4173` or the live host (`E2E_BASE_URL`); asset assertions written env-agnostic; `pnpm test:e2e:built` in the pre-ship gate (§11 step 4b) |
 
@@ -1367,7 +1367,7 @@ export function resolveHashRedirect(): void;        // pre-mount: path-style URL
 16. refresh on /#/worship#visit → stays on-section (HashRouter)
 17. refresh on /#/ministries#mandarin → stays on-section (BSC sixth id)
 18. /worship /news-events /donate (no #, path-style) → land on their pages, not Home (F-3 deep-links via resolveHashRedirect)
-19. pnpm test:e2e:built    → same 51 E2E — stale until retargeted to BSC (see §0/§2) — structural pass still 51 structurally but parish-fact assertions are previous parish (see Appendix D)
+19. pnpm test:e2e:built    → 51/51 green (BSC retargeted F2B) — verified vs dist and the deployed host
 ```
 
 What CI cannot catch: hash-scroll offset on mobile Safari, `divider-weave` paint, font FOIT, `shadow-shrine` clip on `overflow-hidden` parent, reduced-motion variants. (Image-CDN fallback timing is no longer CI-relevant — all images are local, §0; keep `SafeImage` guard for future externals.)
@@ -1381,14 +1381,14 @@ This project follows **ANALYZE → PLAN → VALIDATE → IMPLEMENT → VERIFY �
 1. **ANALYZE** — Mine explicit, implicit, and ambiguous requirements; explore 2–3 approaches with trade-offs.
 2. **PLAN** — Sequenced phases with checklists + success criteria; present for approval.
 3. **VALIDATE** — Obtain explicit go-ahead before coding.
-4. **IMPLEMENT** — Library-first, modular, TDD Red→Green→Refactor (one cycle per commit) — in BSC hop the harness is **0/0 missing** (see §0) — `src.orig/` frozen Risen harness is 35/202 + 51 E2E; restore before TDD or gate on `lint && typecheck && build` only + manual smoke (BSC).
-5. **VERIFY** — `pnpm lint` + `pnpm typecheck` + (`pnpm test` — harness missing → 0/0) + (`pnpm test:e2e` — 51 stale) + `pnpm build` + a11y/perf review + edge cases — re-green requires restoring `src/test` from `src.orig/`.
+4. **IMPLEMENT** — Library-first, modular, TDD Red→Green→Refactor (one cycle per commit) — the harness is restored (F1) and the full five-gate is green (round-13); TDD Red→Green→Refactor gates on `pnpm test` again.
+5. **VERIFY** — `pnpm lint` + `pnpm typecheck` + `pnpm test` (16/94) + `pnpm test:e2e` (51/51) + `pnpm build` + a11y/perf review + edge cases (+ `pnpm test:e2e:built` 51/51).
 6. **DELIVER** — Usage instructions + runbook + follow-up recommendations + **doc sync: §0 first, then sweep** (L15, Appendix G.4).
 
 ---
 ## Appendix D — Lineage & Migration History
 
-> **v4 structure:** v3 consolidated hops 1–3 (Rother→St Joseph→St Mary→Risen Christ) into one lineage record with every count labeled `as of <date>`. **Hop 4 (BSC, this file) extends that record**: `src` 39 files (0 tests, harness missing) on top of the retained `src.orig` 77-file Risen Christ archive (see §0), `skills/` deleted, tokens 25+2 with gold-700 restored, hooks 2 (no scrollspy). Historical counts remain labeled — none is the current value except §0. See D.4 for hop 4 deltas. 
+> **v4 structure:** v3 consolidated hops 1–3 (Rother→St Joseph→St Mary→Risen Christ) into one lineage record with every count labeled `as of <date>`. **Hop 4 (BSC, this file) extends that record**: `src` 58 files (harness restored F1 — 16 files / 94 tests green) — historical hop-4 note: the port landed 39 source-only files before F1; `src.orig` is a local-only artifact (not in repo), `skills/` tracked, tokens 26+2 with gold-700 restored, hooks 2 (no scrollspy). Historical counts remain labeled — none is the current value except §0. See D.4 for hop 4 deltas. 
 
 ### D.1 The Four Generations at a Glance
 
@@ -1593,6 +1593,8 @@ Every finding above is an instance of one failure mode: **volatile facts restate
 
 ### G.5 Hop 4 delta (BSC, 2026-09-01) — what changed and why it is not a fossil
 
+> **Round-13 note (2026-09-01):** the "Blessed Sacrament (v4, §0)" column below is the state **as of the hop-4 port** (pre-F1/F2). The F1–F3 follow-ups restored the harness (16 files / 94 tests), restored `useScrollSpy`, and retargeted the 51 E2E specs to BSC — the current values live in §0, re-verified by the round-13 `docs-contract` guard. Treat this table as an `as of hop-4` snapshot.
+
 | Area | Risen Christ (v3, §0) | Blessed Sacrament (v4, §0) | Migration note |
 |---|---|---|---|
 | Package | `risen-christ-church` 1.4.4 | `blessed-sacrament-queenstown` 1.4.4 (name change only) | Keep `src/` name-aligned — don't reintroduce Risen `site.*` |
@@ -1621,20 +1623,20 @@ Every finding above is an instance of one failure mode: **volatile facts restate
 | 60-sec agent cheat sheet | `AGENTS.md` |
 | Deep workflow + parish fidelity | `CLAUDE.md` |
 | Intent lineage | `docs/prompts.md` (if present) |
-| **Volatile facts (versions, counts, policies) — 0/0 harness missing + 51 stale** | **§0 of this file — the single source; everything else defers to it** |
-| Tokens (25 colors + 2 shadows incl. gold-700, §0) + utilities (27 + 8 keyframes incl. card-tint, §4.3) | `src/index.css` (`--font-sans` alias `--font-body`; utilities incl. `gold-rule`/`gold-rule-left`/`hero-ken-burns`/`rise-in`+`rise-in-d1..d4`/`menu-in`/`drawer-in`/`drawer-item-in`/`page-in`/`dot-pulse`/`card-lift`/`card-tint`/`link-underline`/`reveal`+`reveal-visible`/`skip-link`/`divider-weave`+`divider-weave-thin`/`bg-grain`+`bg-adobe-texture`+`bg-gold-bloom`/`mask-fade-b`/`img-zoom`) |
+| **Volatile facts (versions, counts, policies) — all gates green (16/94 + 51/51 + built 51/51)** | **§0 of this file — the single source; everything else defers to it** |
+| Tokens (26 colors + 2 shadows incl. gold-700, §0) + utilities (27 + 8 keyframes incl. card-tint, §4.3) | `src/index.css` (`--font-sans` alias `--font-body`; utilities incl. `gold-rule`/`gold-rule-left`/`hero-ken-burns`/`rise-in`+`rise-in-d1..d4`/`menu-in`/`drawer-in`/`drawer-item-in`/`page-in`/`dot-pulse`/`card-lift`/`card-tint`/`link-underline`/`reveal`+`reveal-visible`/`skip-link`/`divider-weave`+`divider-weave-thin`/`bg-grain`+`bg-adobe-texture`+`bg-gold-bloom`/`mask-fade-b`/`img-zoom`) |
 | Route table + aliases + anchors | `src/App.tsx` — 17 Route entries (16 content paths + `*`), 7 alias paths in 5 groups (§5.4), 9 hash anchors (3 on `/worship`, 6 on `/ministries` — sixth is `#mandarin` = Language Communities) + path-style deep-link rewrite (`utils/deepLinks.ts` → `main.tsx` pre-mount) |
 | Nav single-source | `src/data/nav.ts` (`primaryNav` 6 + `footerNav` 10, with `description` on children) |
 | Content arrays (10) + images + site | `src/data/content.ts` (per §0/§7.1: `priests` 5 SS.CC, `ppcMembers` 6, `lifeTimeline` 8 [1958–2026 Sacred Hearts/Queenstown], `grounds` 3 (main-church/Adoration Chapel/rosary-garden=Damien Centre), `ministries` 6 (sixth `mandarin` = Language Communities — Indo last Sun 13.00), `faqs` 6, `upcomingEvents` 6 (Corpus Christi feast-first, 1 with href), `givingOptions` 8 (no UEN — PayNow at office), `serveRoles` 4, `devotions` 6 + `images` 11 all-local) + `src/data/site.ts` (`site as const`: hours 6 + mass 9 keys (sunday 6 incl. Indo last Sun) + transport Commonwealth EW20/11041-11049 + feast Corpus Christi Thu after Trinity + cheque + facebook/instagram/whatsapp/sacredHearts + maps + origin/url/ogImage — **NO uen**) |
 | Primitives | `src/components/ui/*` (Button/Container/SectionHeading/Accordion/Reveal) + SafeImage/Emblem/SkipLink/Timeline/SocialIcons/PageHero/Layout/Header/Footer/BackToTop/ScrollProgress |
-| Hooks (2 — NO scrollspy in BSC) | `src/hooks/useScrolled.ts` (threshold 12 default; Header uses 16) + `useScrollProgress.ts` (rAF; BackToTop ring + ScrollProgress rail) — `useScrollSpy` absent (lives in `src.orig/` Risen archive only) |
+| Hooks (3 — scrollspy restored F2A) | `src/hooks/useScrolled.ts` (threshold 12 default; Header uses 16) + `useScrollProgress.ts` (rAF; BackToTop ring + ScrollProgress rail) + `useScrollSpy.ts` (document-order tie-break; drives the Ministries pills) |
 | Utils (4) | `src/utils/cn.ts` (`twMerge(clsx)`) + `massDay.ts` (`massDayKey` — Worship today-highlight) + `monogram.ts` (About discs) + `deepLinks.ts` (`knownRoutePaths` + `resolveHashRedirect` — round-12 F-3; drift-guarded against `App.tsx`) |
 | Images | `public/images/*.jpg` (8 files → `dist/images/`) + `public/favicon.svg` — all local (`naveCdn`→`sanctuary.jpg`, `courtyardCdn`→`rosary-garden.jpg` are local aliases) + `images` export (11 keys all `/images/*`, `SafeImage` with `hero-church.jpg` fallback) |
 | Vite alias + singlefile | `vite.config.ts` (`@→src`, `viteSingleFile()` + `test {globals,jsdom,setupFiles,include,exclude}` — `setupFiles: ["src/test/setup.ts"]` absent in BSC) + `server.watch.ignored` [skills,dist,playwright-report,test-results,coverage,src.orig] — in BSC `skills` deleted, `src.orig` present |
-| TS strict + include | `tsconfig.json` (`strict` + `noUnused*` + `noFallthroughCasesInSwitch`/`isolatedModules`/`noEmit` + `include: ["src","vite.config.ts","eslint.config.js","playwright.config.ts","playwright.built.config.ts"]` + `types: ["node","vitest/globals"]` (globals unused while harness missing) + `paths @/*` + `baseUrl:"."`) |
-| E2E (dev + built) | `playwright.config.ts` (vite :5173) + `playwright.built.config.ts` (vite preview :4173; `E2E_BASE_URL` → live host) — same 51 specs (§0 — stale, Risen Christ parish facts) |
-| Pre-ship gate | `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` (+ `pnpm test:e2e:built`) → counts per §0 (**RED** in BSC: 0/0 + 51 stale, lint 0 + typecheck 0 + build 390.74kB green) → `dist/index.html` + `dist/_headers` + `dist/images/` (8 files) → `pnpm preview` → manual smoke (Appendix B — BSC) |
-| Frozen reference | `src.orig/` — **present — 77-file Risen Christ archive** (41 source + 35 tests + 1 setup) — retained as frozen lineage reference (BSC `src` 39 is the new canonical layer); `src.orig/` history: Appendices D/F + git history — do not edit as `src/` |
+| TS strict + include | `tsconfig.json` (`strict` + `noUnused*` + `noFallthroughCasesInSwitch`/`isolatedModules`/`noEmit` + `include: ["src","vite.config.ts","eslint.config.js","playwright.config.ts","playwright.built.config.ts"]` + `types: ["node","vitest/globals"]` (globals in use since the harness was restored F1) + `paths @/*` + `baseUrl:"."`) |
+| E2E (dev + built) | `playwright.config.ts` (vite :5173) + `playwright.built.config.ts` (vite preview :4173; `E2E_BASE_URL` → live host) — same 51 specs (§0 — green, BSC retargeted F2B) |
+| Pre-ship gate | `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` (+ `pnpm test:e2e:built`) → counts per §0 (**GREEN** — lint 0, typecheck 0, test 16/94, e2e 51/51, build 391.57kB) → `dist/index.html` + `dist/_headers` + `dist/favicon.svg` + `dist/robots.txt` + `dist/images/` (8 files) → `pnpm preview` → manual smoke (Appendix B — BSC) |
+| Lineage reference | `src.orig/` is **not part of the repository** (local-only port-session artifact; never committed) — lineage lives in Appendices D/F + git history |
 | CSP allowlist | `index.html` — `img-src 'self' data: blob:` (all images local), `frame-src https://www.google.com` (maps embed), `script-src` inline (singlefile) + `static.cloudflareinsights.com` — `SafeImage` fallback `/images/hero-church.jpg` |
 | **Outstanding security action** | **Rotate the ssh key leaked in git history (`docs/ssh-key.txt`, commit `0be0fe8`) — repo owner action; working-tree guard is `src/repo-hygiene.test.ts`** |
 | Audit ledger + remediation | `docs/code-review-audit-round6-2026-08-31.md` + `docs/remediation-plan-round6-2026-08-31.md` (round 6) · `docs/code-review-audit-round7-2026-08-31.md` + `docs/remediation-plan-round7-2026-08-31.md` (round-7 audit of the "Honest Light" commits — zero new C/H/M; scrollspy tie-break + E2E sleep remediation) · `docs/design-enhancement-round7-2026-08-31.md` (round-7 design) · `docs/remediation-plan-round9-2026-08-31.md` (round-9 built-artifact E2E contract — E2E-L1 favicon form + `playwright.built.config.ts`) · `docs/e2e-live-pass-round11-2026-08-31.md` (round-11 live pass vs `66d2398` — byte-verified deploy + tri-env + journey; E2E-J1 `agent-browser eval` backslash lesson → pitfall #15) · `docs/UI-UX-Design-Audit_StMaryOfAngels_vs_RisenChrist.md` + `docs/remediation-plan-round12-2026-08-31.md` + `docs/remediation-round12-2026-08-31.md` (round-12 comparative UI/UX audit remediation — F-1 Devotion chip AA terracotta-600 5.36:1, F-2 mass-card footnote /85 + date lock, F-3 path-style deep-link rewrite, F-4 Give UEN copyable row, F-9 src.orig prune; TDD red→green) · **unification audit 2026-09-01: Appendix G** |

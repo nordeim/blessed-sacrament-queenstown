@@ -1,14 +1,15 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PageHero } from "@/components/PageHero";
 import { SafeImage } from "@/components/SafeImage";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { images, ministries } from "@/data/content";
+import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { cn } from "@/utils/cn";
 
 export function Ministries() {
-  const { hash } = useLocation();
-  const active = hash.replace("#", "");
+  const ids = ministries.map((m) => m.id);
+  const active = useScrollSpy(ids);
 
   return (
     <>

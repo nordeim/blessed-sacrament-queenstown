@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Vendored `skills/` (tracked since round-13's .gitignore fix) and test files
+   document utility names in prose/code samples but must never drive CSS
+   emission — without these exclusions Tailwind's content scan re-emits
+   tree-shaken utilities and inflates the single-file bundle (round-13 gate
+   caught: 391.57 → 473.65 kB). */
+@source not "../skills/**";
+@source not "src/**/*.{test,spec}.{ts,tsx}";
+
 @theme {
   --color-shrine-cream: #faf6ec;
   --color-shrine-parchment: #f2e9d6;

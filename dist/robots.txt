@@ -1,0 +1,11 @@
+# Blessed Sacrament Church — Queenstown (port of www.bsc.org.sg)
+# The site is a HashRouter SPA: canonical content lives at /#/path URLs and
+# the canonical domain is https://www.bsc.org.sg/ (see index.html <link rel=canonical>).
+User-agent: *
+Allow: /
+Disallow:
+
+# No sitemap.xml: hash-style routes are not individually indexable; crawlers
+# should index the canonical parish domain (bsc.org.sg). Unknown paths on
+# static hosts return the SPA shell with HTTP 200 (soft 404) — accepted
+# trade-off of HashRouter on static hosting (ADR-1).

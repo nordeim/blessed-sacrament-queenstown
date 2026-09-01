@@ -22,17 +22,19 @@ Next, convert the plan into a detailed ToDo list before meticulously executing t
 
 ---
 
-Please meticulously plan to explore the codebase to identify opportunities to enhance the visual appeal and aesthetics as well as UI/UX design and animations of `https://st-mary-of-angels.jesspete.shop/` represented by the codebase at repo `https://github.com/nordeim/st-mary-of-angels.git`. Then meticulously plan to create a comprehensive remediation plan to apply the identified visual and UI/UX enhancements. Review and validate the remediation plan against the current codebase to ensure alignment before executing meticulously. Look for relevant skills from the repo included `skills/` folder to help you with the reimagination and planning (refer to the repo included `skills/skills-catalog.md` to help you with skills selection). Use TDD approach to make changes.
+Please meticulously plan to explore the codebase to identify opportunities to enhance the visual appeal and aesthetics as well as UI/UX design and animations of `https://blessed-sacrament.jesspete.shop/` represented by the codebase at repo `https://github.com/nordeim/blessed-sacrament-queenstown.git`. Then meticulously plan to create a comprehensive remediation plan to apply the identified visual and UI/UX enhancements. Review and validate the remediation plan against the current codebase to ensure alignment before executing meticulously. Look for relevant skills from the repo included `skills/` folder to help you with the reimagination and planning (refer to the repo included `skills/skills-catalog.md` to help you with skills selection). Use TDD approach to make changes.
 
 Next, meticulously plan to perform E2E tests to audit and validate the remediated codebase. Update the relevant project documents to align with the remediated codebase.
 
 Next, deploy the final remediated codebase to a preview site to showcase your design.
 
-Finally, `git commit` all code and document changes locally and then `git push` them to my GitGub repo using the included ssh key `docs/ssh-key.txt` (also attached here) and wrapper script `skills/how-to-git-push-using-ssh-wrapper/scripts/ssh_git_wrapper_v3.py`.
+Finally, `git commit` all code and document changes locally and then `git push` them to my GitGub repo using the attached ssh key `ssh-key.txt` (also attached here) and wrapper script `skills/how-to-git-push-using-ssh-wrapper/scripts/ssh_git_wrapper_v3.py`.
 
 Do not create any new git branch. All git commits must be to the main branch.
 
 ---
+
+please meticulously review @AGENTS.md , @CLAUDE.md , @README.md and @blessed-sacrament-queenstown_SKILL.md to have a deep understanding of the project and its codebase design and architecture. Next, meticulously plan to perform code review and audit/validation of the code and document changes in the recent git commits shown:
 
 please meticulously review @AGENTS.md , @CLAUDE.md , @README.md and @risen-christ_SKILL.md to have a deep understanding of the project and its codebase design and architecture. Next, meticulously plan to validate your deep understanding against the codebase to check for alignment and to confirm the project status.
 
@@ -40,7 +42,7 @@ in the current project folder, the original `src/` was moved to `src.orig/` and 
 
 please meticulously plan to validate that the new codebase represented by folder `src/` has adopted and improved upon all the good design elements and practices from the old codebase represented by `src.orig/`.
 
-please meticulously review @AGENTS.md , @CLAUDE.md , @README.md and @rothershrine_SKILL.md to have a deep understanding of the project and its codebase design and architecture. Next, meticulously plan to validate your deep understanding against the codebase to check for alignment and to confirm the project status.
+please meticulously review @AGENTS.md , @CLAUDE.md , @README.md and @blessed-sacrament-queenstown_SKILL.md to have a deep understanding of the project and its codebase design and architecture. Next, meticulously plan to validate your deep understanding against the codebase to check for alignment and to confirm the project status.
 
 please meticulouly plan to perform a code review and audit on the current codebase using your available and relevant skills
 

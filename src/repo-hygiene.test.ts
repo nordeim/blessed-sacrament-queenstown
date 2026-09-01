@@ -45,3 +45,37 @@ describe("no reference copies are tracked", () => {
     expect(leftovers).toEqual([]);
   });
 });
+
+describe("no tracked file matches a .gitignore rule (round-13 M5)", () => {
+  // Lesson L14 (round-12 F-9): adding a path to .gitignore does not untrack
+  // it. `package-lock.json`, `test-results/.last-run.json` and `docs/*.zip`
+  // shipped tracked despite ignore rules. `git check-ignore` fails closed:
+  // every tracked file must either be not-ignored or explicitly whitelisted
+  // with a leading `!` rule.
+  it("intersection of git ls-files and git check-ignore is empty", () => {
+    const tracked = trackedFiles();
+    // Batch through check-ignore (verbose+non-matching+no-index: without
+    // --no-index git never reports tracked files as ignored, which is exactly
+    // the blind spot being guarded). git may exit 1 when nothing matches —
+    // capture stdout either way.
+    let out = "";
+    try {
+      out = execSync("git check-ignore --stdin --verbose --non-matching --no-index", {
+        cwd: root,
+        encoding: "utf8",
+        input: `${tracked.join("\n")}\n`,
+        maxBuffer: 16 * 1024 * 1024,
+      });
+    } catch (err) {
+      out = (err as { stdout?: string }).stdout ?? "";
+    }
+    // Ignored lines are `<source>:<line>:<pattern>\t<path>`; non-ignored are
+    // `::\t<path>`. A tracked file must never appear with a real pattern.
+    const violations = out
+      .split("\n")
+      .filter(Boolean)
+      .filter((line) => !line.startsWith("::\t"))
+      .map((line) => line.slice(line.indexOf("\t") + 1));
+    expect(violations.sort()).toEqual([]);
+  });
+});

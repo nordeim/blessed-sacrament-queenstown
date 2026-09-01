@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { execSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 
@@ -121,7 +122,10 @@ describe("code invariants — package + e2e", () => {
 
 describe("code invariants — repo layout", () => {
   it("does not ship src.orig/ (local-only port-session artifact, never committed)", () => {
-    expect(existsSync(join(root, "src.orig"))).toBe(false);
+    // src.orig may exist on disk locally (ignored) but must never be tracked —
+    // .gitignore does not untrack, so check the index (mirrors repo-hygiene).
+    const tracked = execSync("git ls-files src.orig", { cwd: root, encoding: "utf8" }).trim();
+    expect(tracked).toBe("");
   });
 
   it("ships the vendored skills/ catalog, ignored by lint tooling", () => {
@@ -179,13 +183,13 @@ describe("doc contracts — AGENTS.md", () => {
 describe("doc contracts — CLAUDE.md / README.md / SKILL frontmatter", () => {
   it("CLAUDE.md pins the green gate (no 0/0 harness-missing claim)", () => {
     const claude = read("CLAUDE.md");
-    expect(claude).toContain("16 files / 94 tests");
+    expect(claude).toContain("17 files / 115 tests");
     expect(claude).not.toContain("0 files / 0 tests — harness missing");
   });
 
   it("README.md pins the green gates (unit + BSC E2E)", () => {
     const readme = read("README.md");
-    expect(readme).toContain("16 files / 94 tests");
+    expect(readme).toContain("17 files / 115 tests");
     expect(readme).not.toContain("stale Risen Christ copy will fail");
   });
 
@@ -194,6 +198,6 @@ describe("doc contracts — CLAUDE.md / README.md / SKILL frontmatter", () => {
     const frontmatter = skill.slice(0, skill.indexOf("---", 4));
     expect(frontmatter).toContain("project_state:");
     expect(frontmatter).not.toContain("0 tests");
-    expect(frontmatter).toContain("16 files / 94 tests");
+    expect(frontmatter).toContain("17 files / 115 tests");
   });
 });

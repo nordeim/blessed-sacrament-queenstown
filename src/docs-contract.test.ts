@@ -138,6 +138,21 @@ describe("code invariants — repo layout", () => {
   });
 });
 
+describe("code invariants — built artifact budget (round-14 M1 class)", () => {
+  it("keeps the single-file bundle under the 420 kB budget when dist/ exists", () => {
+    const dist = join(root, "dist/index.html");
+    // Fresh clone / CI test phase runs before `pnpm build` — nothing to check.
+    if (!existsSync(dist)) return;
+    // Round-13/14 evidence (docs/validation-round14-addendum-2026-09-02.md §2):
+    // the clean build is byte-stable at 391,565 B; deleting the
+    // `@source not "../skills/**"` pin in src/index.css re-emits tree-shaken
+    // utilities from the vendored skills/ scan and bloats the bundle to
+    // 473,650 B (+82 kB). The 420 kB budget flags exactly that class while
+    // tolerating legitimate content growth.
+    expect(statSync(dist).size).toBeLessThan(420 * 1024);
+  });
+});
+
 describe("code invariants — footer social contract", () => {
   it("Footer renders exactly 2 social icons and no whatsapp/ss.cc/parish-update links", () => {
     const footer = read("src/components/Footer.tsx");
@@ -183,13 +198,13 @@ describe("doc contracts — AGENTS.md", () => {
 describe("doc contracts — CLAUDE.md / README.md / SKILL frontmatter", () => {
   it("CLAUDE.md pins the green gate (no 0/0 harness-missing claim)", () => {
     const claude = read("CLAUDE.md");
-    expect(claude).toContain("17 files / 115 tests");
+    expect(claude).toContain("17 files / 117 tests");
     expect(claude).not.toContain("0 files / 0 tests — harness missing");
   });
 
   it("README.md pins the green gates (unit + BSC E2E)", () => {
     const readme = read("README.md");
-    expect(readme).toContain("17 files / 115 tests");
+    expect(readme).toContain("17 files / 117 tests");
     expect(readme).not.toContain("stale Risen Christ copy will fail");
   });
 
@@ -198,6 +213,15 @@ describe("doc contracts — CLAUDE.md / README.md / SKILL frontmatter", () => {
     const frontmatter = skill.slice(0, skill.indexOf("---", 4));
     expect(frontmatter).toContain("project_state:");
     expect(frontmatter).not.toContain("0 tests");
-    expect(frontmatter).toContain("17 files / 115 tests");
+    expect(frontmatter).toContain("17 files / 117 tests");
+  });
+
+  it("README/SKILL pin the restored scrollspy (no stale 2-hook claims — round-14 M2)", () => {
+    const readme = read("README.md");
+    const skill = read("blessed-sacrament-queenstown_SKILL.md");
+    expect(readme).toContain("useScrollSpy");
+    expect(readme).not.toContain("no useScrollSpy");
+    expect(skill).toContain("Three hooks");
+    expect(skill).not.toContain("NO `useScrollSpy`");
   });
 });

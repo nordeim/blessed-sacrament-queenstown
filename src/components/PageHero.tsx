@@ -38,7 +38,10 @@ export function PageHero({
           src={image}
           fallback={fallback ?? image}
           alt=""
-          className={cn("h-full w-full object-cover", isLight ? "opacity-60" : "opacity-80")}
+          className={cn(
+            "hero-ken-burns h-full w-full object-cover",
+            isLight ? "opacity-70" : "opacity-80",
+          )}
           loading="eager"
           fetchPriority="high"
         />
@@ -46,11 +49,11 @@ export function PageHero({
           className={cn(
             "absolute inset-0 bg-gradient-to-b",
             isLight
-              ? "from-shrine-maroon-950/50 via-shrine-maroon-950/60 to-shrine-maroon-950"
-              : "from-shrine-maroon-950/45 via-shrine-maroon-950/65 to-shrine-maroon-950",
+              ? "from-shrine-maroon-950/40 via-shrine-maroon-950/50 to-shrine-maroon-950"
+              : "from-shrine-maroon-950/35 via-shrine-maroon-950/50 to-shrine-maroon-950",
           )}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-shrine-maroon-950/70 via-shrine-maroon-950/25 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-shrine-maroon-950/55 via-shrine-maroon-950/15 to-transparent" />
         <div className="bg-grain pointer-events-none absolute inset-0" />
       </div>
       <Container className={cn("relative flex flex-col justify-end pb-14 pt-32", compact && "pb-10 pt-28")}>

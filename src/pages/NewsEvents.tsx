@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { EventMeta } from "@/components/EventMeta";
 import { Button } from "@/components/ui/Button";
@@ -37,9 +38,10 @@ export function NewsEvents() {
                     href={event.href}
                     rel="noopener noreferrer"
                     target="_blank"
-                    className="link-underline mt-5 w-fit text-sm text-shrine-maroon-600"
+                    className="link-underline mt-5 inline-flex w-fit items-center gap-1.5 text-sm text-shrine-maroon-600"
                   >
                     Read more
+                    <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                   </a>
                 ) : null}
               </article>
@@ -49,7 +51,7 @@ export function NewsEvents() {
       </section>
 
       <section className="relative overflow-hidden bg-shrine-maroon-950 py-16">
-        <div className="bg-gold-bloom pointer-events-none absolute inset-0" />
+        <div className="bg-gold-bloom bloom-drift pointer-events-none absolute inset-0" />
         <Container className="relative flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <p className="max-w-xl font-display text-2xl text-shrine-cream">
             For weekly notices, follow the parish on Facebook or write to the office.

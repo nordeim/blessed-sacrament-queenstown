@@ -131,7 +131,7 @@ export function Worship() {
             title="Confession & adoration"
             description="Come as you are. The confessionals and the Adoration Chapel are open houses of mercy."
           />
-          <div className="mt-10 grid gap-10 lg:grid-cols-2">
+          <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
             <div>
               <h3 className="font-display text-2xl">Sacrament of Reconciliation</h3>
               <p className="mt-3 leading-relaxed text-shrine-charcoal/85">{site.mass.confession}</p>

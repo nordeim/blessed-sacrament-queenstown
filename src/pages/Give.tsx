@@ -66,7 +66,7 @@ export function Give() {
       </section>
 
       <section className="relative overflow-hidden bg-shrine-maroon-950 py-20">
-        <div className="bg-gold-bloom pointer-events-none absolute inset-0" />
+        <div className="bg-gold-bloom bloom-drift pointer-events-none absolute inset-0" />
         <Container className="relative grid gap-8 lg:grid-cols-2 lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-shrine-gold-300">

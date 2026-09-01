@@ -66,9 +66,10 @@ describe("code invariants — design tokens (src/index.css)", () => {
     expect(css).toContain("--color-shrine-terracotta-600: #8f4c30");
   });
 
-  it("declares the 8 keyframes", () => {
+  it("declares the 9 keyframes", () => {
     expect(keyframes.sort()).toEqual(
       [
+        "bloom-drift",
         "drawer-in",
         "drawer-item-in",
         "gold-rule-draw",
@@ -79,6 +80,33 @@ describe("code invariants — design tokens (src/index.css)", () => {
         "rise-in",
       ].sort(),
     );
+  });
+});
+
+describe("code invariants — round-15 motion contract", () => {
+  /**
+   * Round-15 visual/motion remediation (docs/design-enhancement-round15-2026-09-02.md):
+   * page heroes drift, dark bands breathe, the history rail draws in,
+   * and BackToTop enters with the lift idiom. Transform/opacity only —
+   * the global prefers-reduced-motion neutralizer covers every effect.
+   */
+  it("carries the round-15 motion contract", () => {
+    const pageHero = read("src/components/PageHero.tsx");
+    expect(pageHero).toContain("hero-ken-burns");
+
+    for (const page of ["src/pages/Home.tsx", "src/pages/NewsEvents.tsx", "src/pages/Give.tsx"]) {
+      expect(read(page)).toContain("bloom-drift");
+    }
+
+    const timeline = read("src/components/Timeline.tsx");
+    expect(timeline).toContain("scale-y-0");
+    expect(timeline).toContain("origin-top");
+    expect(timeline).toContain("Reveal");
+    expect(timeline).toContain("prefers-reduced-motion");
+
+    const backToTop = read("src/components/BackToTop.tsx");
+    expect(backToTop).toContain("opacity,transform");
+    expect(backToTop).toContain("translate-y-2");
   });
 });
 
@@ -198,13 +226,13 @@ describe("doc contracts — AGENTS.md", () => {
 describe("doc contracts — CLAUDE.md / README.md / SKILL frontmatter", () => {
   it("CLAUDE.md pins the green gate (no 0/0 harness-missing claim)", () => {
     const claude = read("CLAUDE.md");
-    expect(claude).toContain("17 files / 117 tests");
+    expect(claude).toContain("17 files / 118 tests");
     expect(claude).not.toContain("0 files / 0 tests — harness missing");
   });
 
   it("README.md pins the green gates (unit + BSC E2E)", () => {
     const readme = read("README.md");
-    expect(readme).toContain("17 files / 117 tests");
+    expect(readme).toContain("17 files / 118 tests");
     expect(readme).not.toContain("stale Risen Christ copy will fail");
   });
 
@@ -213,7 +241,7 @@ describe("doc contracts — CLAUDE.md / README.md / SKILL frontmatter", () => {
     const frontmatter = skill.slice(0, skill.indexOf("---", 4));
     expect(frontmatter).toContain("project_state:");
     expect(frontmatter).not.toContain("0 tests");
-    expect(frontmatter).toContain("17 files / 117 tests");
+    expect(frontmatter).toContain("17 files / 118 tests");
   });
 
   it("README/SKILL pin the restored scrollspy (no stale 2-hook claims — round-14 M2)", () => {

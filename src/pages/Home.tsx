@@ -24,8 +24,8 @@ export function Home() {
             loading="eager"
             fetchPriority="high"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-shrine-maroon-950/40 via-shrine-maroon-950/55 to-shrine-maroon-950" />
-          <div className="absolute inset-0 bg-gradient-to-r from-shrine-maroon-950/70 via-shrine-maroon-950/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-shrine-maroon-950/30 via-shrine-maroon-950/45 to-shrine-maroon-950" />
+          <div className="absolute inset-0 bg-gradient-to-r from-shrine-maroon-950/55 via-shrine-maroon-950/20 to-transparent" />
           <div className="bg-grain pointer-events-none absolute inset-0" />
         </div>
 
@@ -46,7 +46,7 @@ export function Home() {
               The parish
             </Button>
           </div>
-          <dl className="rise-in rise-in-d4 mt-12 grid max-w-2xl grid-cols-2 gap-6 text-shrine-cream sm:grid-cols-4">
+          <dl className="rise-in rise-in-d4 mt-12 grid max-w-3xl grid-cols-2 gap-6 text-shrine-cream sm:grid-cols-4">
             <div>
               <dt className="text-[0.65rem] uppercase tracking-[0.2em] text-shrine-gold-300">Sunday</dt>
               <dd className="mt-1 font-display text-lg">7.30 a.m.–5.30 p.m.</dd>
@@ -168,7 +168,7 @@ export function Home() {
       </section>
 
       <section className="relative overflow-hidden bg-shrine-maroon-950 py-20 sm:py-24">
-        <div className="bg-gold-bloom pointer-events-none absolute inset-0" />
+        <div className="bg-gold-bloom bloom-drift pointer-events-none absolute inset-0" />
         <Container className="relative flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-shrine-gold-300">

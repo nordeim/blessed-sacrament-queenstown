@@ -135,6 +135,23 @@
     mix-blend-mode: multiply;
   }
 
+  /* Round-15 ambient life for the dark CTA bands: the gold bloom slowly
+     breathes (translate + scale only — compositor-friendly; the global
+     prefers-reduced-motion neutralizer flattens it to a single frame). */
+  @keyframes bloom-drift {
+    from {
+      transform: translate3d(-1.5%, -1%, 0) scale(1);
+    }
+    to {
+      transform: translate3d(1.5%, 1.5%, 0) scale(1.08);
+    }
+  }
+
+  .bloom-drift {
+    animation: bloom-drift 14s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
   .divider-weave {
     background-image: repeating-linear-gradient(
       45deg,

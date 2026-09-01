@@ -41,8 +41,10 @@ export function BackToTop() {
       tabIndex={visible ? 0 : -1}
       onClick={scrollTop}
       className={cn(
-        "fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-shrine-gold-400 bg-shrine-maroon-950 text-shrine-gold-300 shadow-shrine transition-opacity duration-300",
-        visible ? "opacity-100" : "pointer-events-none opacity-0",
+        "fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-shrine-gold-400 bg-shrine-maroon-950 text-shrine-gold-300 shadow-shrine transition-[opacity,transform] duration-300 ease-out",
+        visible
+          ? "translate-y-0 scale-100 opacity-100"
+          : "pointer-events-none translate-y-2 scale-95 opacity-0",
       )}
     >
       <svg

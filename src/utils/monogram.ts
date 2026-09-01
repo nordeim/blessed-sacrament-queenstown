@@ -1,6 +1,7 @@
 const HONORIFICS = new Set([
   "fr",
   "friar",
+  "father",
   "rev",
   "reverend",
   "msgr",
@@ -29,5 +30,8 @@ export function monogram(name: string): string {
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("");
 
-  return initials || name.slice(0, 2).toUpperCase();
+  if (initials) return initials;
+  if (cleaned.length === 0) return "";
+  const trimmed = name.trim();
+  return trimmed ? trimmed.slice(0, 2).toUpperCase() : "";
 }

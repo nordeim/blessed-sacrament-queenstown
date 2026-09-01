@@ -40,7 +40,7 @@ Every row below is implemented — no placeholders. Pages are named exports from
 | Icons | lucide-react | `1.38.0` | Header/footer + page iconography |
 | Utils | clsx + tailwind-merge | `2.1.1` / `3.6.0` | `cn()` class merging — always merge via `cn()` |
 | Bundling | vite-plugin-singlefile | `2.3.3` | Inlines JS+CSS into `dist/index.html` (`public/images/` copied to `dist/images/`) |
-| Testing | Vitest + Testing Library + jsdom | `3.2.6` / `16.2.0` / `26.1.0` | `vitest run` — **17 files / 117 tests green** (harness `src/test/setup.ts` restored — F1; BSC fixtures; round-13/14 guard suites included). |
+| Testing | Vitest + Testing Library + jsdom | `3.2.6` / `16.2.0` / `26.1.0` | `vitest run` — **17 files / 118 tests green** (harness `src/test/setup.ts` restored — F1; BSC fixtures; round-13/14 guard suites included). |
 | E2E | Playwright | `1.55.1` | `chromium`, `webServer` → `pnpm exec vite --port 5173 --host 127.0.0.1 --strictPort`, `e2e/` — **8 spec files + helpers — 51 tests green — retargeted to BSC** (A tent of meeting, 1 Commonwealth Drive, Commonwealth EW20); built-artifact pass: `pnpm test:e2e:built` (`playwright.built.config.ts` — `vite preview :4173`, `E2E_BASE_URL` → live host)
 | Linting | ESLint flat + typescript-eslint + react-hooks | `9.39.5` / `8.28.0` / `5.2.0` | `eslint . --max-warnings 0`, `eslint.config.js` (ignores `dist`, `skills`, `src.orig`) |
 | Fonts | Google Fonts | — | `Fraunces` (display) + `Source Sans 3` (body) via `index.html` |
@@ -83,7 +83,7 @@ flowchart TB
   P --> D[src/data — nav.ts + content.ts (1958–2026 Tent of Meeting) + site.ts (1 Commonwealth Drive)]
   H & F & P --> S[Tailwind @theme — src/index.css — shrine-* 26 colors + 2 shadows + gold-700]
   R --> V[Vite 7.3.6 + viteSingleFile 2.3.3]
-  V --> O[dist/index.html 391.57kB + dist/images/ — single file + public assets]
+  V --> O[dist/index.html 392.96kB + dist/images/ — single file + public assets]
   O --> G[GitHub Pages / S3]
 ```
 
@@ -107,7 +107,7 @@ flowchart TB
 ├── 📂 src/                  # 58 files — 40 source + 17 tests / 94 tests green + 1 setup (harness restored F1)
 │   ├── 📄 App.tsx           # HashRouter + 17 Route entries (16 content paths + * → NotFound; 5 alias groups / 7 alias paths; hash anchors #mass/#confession/#visit + 6 ministry ids)
 │   ├── 📄 main.tsx          # StrictMode + createRoot + resolveHashRedirect pre-mount rewrite
-│   ├── 📄 index.css         # @theme shrine-* tokens (26 colors incl. gold-700 #85601f + 2 shadows) + @layer base/utilities (26+ utilities: text-balance, bg-adobe-texture, bg-gold-bloom, bg-grain, divider-weave, divider-weave-thin, gold-rule, gold-rule-left, hero-ken-burns, img-zoom, mask-fade-b, reveal, reveal-visible, rise-in + rise-in-d1..d4, menu-in, drawer-in, drawer-item-in, page-in, dot-pulse, card-lift, card-tint, link-underline, skip-link + 8 keyframes)
+│   ├── 📄 index.css         # @theme shrine-* tokens (26 colors incl. gold-700 #85601f + 2 shadows) + @layer base/utilities (28+ utilities: text-balance, bg-adobe-texture, bg-gold-bloom, bg-grain, divider-weave, divider-weave-thin, gold-rule, gold-rule-left, hero-ken-burns, img-zoom, mask-fade-b, reveal, reveal-visible, rise-in + rise-in-d1..d4, menu-in, drawer-in, drawer-item-in, page-in, dot-pulse, card-lift, card-tint, link-underline, skip-link, bloom-drift + 9 keyframes)
 │   ├── 📂 components/
 │   │   ├── 📄 Layout.tsx    # Outlet + scroll/hash restoration (double-hash aware, split on #, strip /, setTimeout 80ms, fallback window.scrollTo) + ScrollProgress + SkipLink + keyed page-in container
 │   │   ├── 📄 Header.tsx    # fixed maroon-950 bar, useScrolled(16), hover/focus-open dropdown (primaryNav; trigger has no click-toggle — keyboard via onFocusCapture), mobile modal drawer (dialog + aria-modal + focus trap + focus restore; closes on in-drawer link, Escape, outside tap), includes top bar Give link
@@ -156,7 +156,7 @@ flowchart TB
 └── 📄 AGENTS.md             # Compact agent cheat sheet
 ```
 
-Current audits — **2026-09-01 round-13 (Blessed Sacrament): all gates green — `pnpm lint` 0 + `pnpm typecheck` 0 + `pnpm test` 17 files / 117 tests + `pnpm test:e2e` 51/51 + `pnpm build` 391.57 kB + `pnpm test:e2e:built` 51/51; live host verified (byte-identical deploy 391,565 B, 15-route browser journey, zero console errors). Round-13 tiered audit (`docs/code-review-audit-round13-2026-09-01.md`): C1 leaked deploy key recoverable from git history — **rotate the key**; H1 host-level security headers not served by the current host — add via Cloudflare config; docs/repo drift re-pinned. Round-14 (2026-09-02, `docs/validation-round14-2026-09-02.md` + independent re-validation `docs/validation-round14-addendum-2026-09-02.md`): the M1 build-size claim is **refuted** — clean build is byte-identical 391,565 B, 473,650 B reproduces only without the `@source not "../skills/**"` Tailwind pin (a 420 kB built-artifact budget guard now fails that class in CI); M4/L1 were already remediated in `6e0e991`; docs re-pinned to 17 files / 117 tests; all six gates re-green (lint 0, typecheck 0, test 117, e2e 51/51 dev + built, build 391.57 kB). `index.html` already BSC (1 Commonwealth Drive, Corpus Christi, Commonwealth EW20, Fraunces + Source Sans 3, CSP `img-src 'self' data: blob:`). Historical audits (Risen Christ / St Mary) are retained in `docs/` and marked **(historical)** — **2026-08-31 Risen Christ port** lint 0 + typecheck 0 + 35/202 + 51 E2E + 397.52 kB, **round-6 tiered review & security audit** (`docs/code-review-audit-round6-2026-08-31.md`), **round-7 "Honest Light"** (`docs/design-enhancement-round7-2026-08-31.md`), **round-7 audit** (`docs/code-review-audit-round7-2026-08-31.md` + `docs/remediation-plan-round7-2026-08-31.md`), **round-9 built-artifact contract** (`docs/remediation-plan-round9-2026-08-31.md` — `playwright.built.config.ts`), **round-11 live E2E** (`docs/e2e-live-pass-round11-2026-08-31.md`), **round-12 comparative audit** (`docs/UI-UX-Design-Audit_StMaryOfAngels_vs_RisenChrist.md` + `docs/remediation-plan-round12-2026-08-31.md` + `docs/remediation-round12-2026-08-31.md`).
+Current audits — **2026-09-01 round-13 (Blessed Sacrament): all gates green — `pnpm lint` 0 + `pnpm typecheck` 0 + `pnpm test` 17 files / 117 tests + `pnpm test:e2e` 51/51 + `pnpm build` 391.57 kB + `pnpm test:e2e:built` 51/51; live host verified (byte-identical deploy 391,565 B, 15-route browser journey, zero console errors). Round-13 tiered audit (`docs/code-review-audit-round13-2026-09-01.md`): C1 leaked deploy key recoverable from git history — **rotate the key**; H1 host-level security headers not served by the current host — add via Cloudflare config; docs/repo drift re-pinned. Round-14 (2026-09-02, `docs/validation-round14-2026-09-02.md` + independent re-validation `docs/validation-round14-addendum-2026-09-02.md`): the M1 build-size claim is **refuted** — clean build is byte-identical 391,565 B, 473,650 B reproduces only without the `@source not "../skills/**"` Tailwind pin (a 420 kB built-artifact budget guard now fails that class in CI); M4/L1 were already remediated in `6e0e991`; docs re-pinned to 17 files / 117 tests; all six gates re-green (lint 0, typecheck 0, test 117, e2e 51/51 dev + built, build 391.57 kB). Round-15 (2026-09-02, `docs/design-enhancement-round15-2026-09-02.md`): visual/UI-UX/motion remediation under the round-15 motion contract — Ken Burns drift on PageHero imagery + retuned hero gradients (photography breathes, bottom-anchored text contrast preserved), History timeline rail draw-in + staggered `Reveal` entries, `bloom-drift` ambient glow on the three dark CTA bands (keyframes 8→9, utilities 27→28), BackToTop lift entrance, Worship confession grid centering, hero fact-row un-wrapped, NewsEvents `Read more` gains an external-link affordance icon; guards extended first (docs-contract 23 checks), 17 files / 118 tests green, e2e 51/51 dev + built, build 392.96 kB.`index.html` already BSC (1 Commonwealth Drive, Corpus Christi, Commonwealth EW20, Fraunces + Source Sans 3, CSP `img-src 'self' data: blob:`). Historical audits (Risen Christ / St Mary) are retained in `docs/` and marked **(historical)** — **2026-08-31 Risen Christ port** lint 0 + typecheck 0 + 35/202 + 51 E2E + 397.52 kB, **round-6 tiered review & security audit** (`docs/code-review-audit-round6-2026-08-31.md`), **round-7 "Honest Light"** (`docs/design-enhancement-round7-2026-08-31.md`), **round-7 audit** (`docs/code-review-audit-round7-2026-08-31.md` + `docs/remediation-plan-round7-2026-08-31.md`), **round-9 built-artifact contract** (`docs/remediation-plan-round9-2026-08-31.md` — `playwright.built.config.ts`), **round-11 live E2E** (`docs/e2e-live-pass-round11-2026-08-31.md`), **round-12 comparative audit** (`docs/UI-UX-Design-Audit_StMaryOfAngels_vs_RisenChrist.md` + `docs/remediation-plan-round12-2026-08-31.md` + `docs/remediation-round12-2026-08-31.md`).
 
 ## Quick Start
 
@@ -191,9 +191,9 @@ pnpm preview
 pnpm lint               # eslint flat — expect no output (clean)
 pnpm typecheck         # tsc --noEmit — expect no output (clean)
 pnpm build              # expect: "✓ built in ~3s" + "Inlining: index-*.js / style-*.css"
-ls -lh dist/index.html  # expect: single HTML file ~391.57 kB, no separate assets chunk
+ls -lh dist/index.html  # expect: single HTML file ~392.96 kB, no separate assets chunk
 ls -lh dist/images/     # expect: 8 images (hero-church + chapel-interior + sanctuary + rosary-garden + stained-glass + parish-hall + cemetery + feast)
-pnpm test               # expect: 17 files / 117 tests green (harness src/test/setup.ts restored)
+pnpm test               # expect: 17 files / 118 tests green (harness src/test/setup.ts restored)
 pnpm test:e2e           # expect: 51 tests green (BSC retargeted F2B)
 ```
 
@@ -202,9 +202,9 @@ pnpm test:e2e           # expect: 51 tests green (BSC retargeted F2B)
 | `pnpm dev` | Vite ready on `:5173`, HMR active |
 | `pnpm lint` | Exit `0`, no warnings (`--max-warnings 0`) |
 | `pnpm typecheck` | Exit `0`, no errors |
-| `pnpm test` | **17 files / 117 tests green** (`src/test/setup.ts` restored — F1) |
+| `pnpm test` | **17 files / 118 tests green** (`src/test/setup.ts` restored — F1) |
 | `pnpm test:e2e` | **51 tests / 8 spec files green** — BSC retargeted (smoke 11 + navigation 8 + ministries 4 + give-faq 4 + enhancements 7 + enhancements-round5 6 + enhancements-round7 8 + deep-links 3) |
-| `pnpm build` | `dist/index.html` ~391.57 kB + `dist/images/` (8 files) + `dist/_headers` |
+| `pnpm build` | `dist/index.html` ~392.96 kB + `dist/images/` (8 files) + `dist/_headers` |
 | `pnpm preview` | Prod preview on `:4173`, alias routes (`/mass-times`, `/ministry`, `/donate`, `/volunteer`…) + hash anchors (`#/worship#mass`, `#/ministries#liturgical`) navigate |
 
 ## Design System
@@ -242,7 +242,7 @@ Tokens live in `src/index.css` `@theme`. Extend there — never use arbitrary `b
 
 ## Deployment
 
-Primary artifact `dist/index.html` (~391.57 kB, + `dist/images/` — 8 files, + `dist/_headers`) — no server, no env vars, no rewrites needed. The artifact ships a scoped `Content-Security-Policy` meta (`img-src 'self' data: blob:` only, `object-src 'none'`, `base-uri 'self'`, Google Fonts, `frame-src` Google Maps) + a `Referrer-Policy` meta. `public/_headers` adds the host-level headers a static file cannot set (HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`) — **on Cloudflare Pages only**. The current host is not assumed to be Pages — those headers are not served on generic static hosts (S3, GH Pages, proxied origins) without an explicit host config. Add the five headers via the host's header config (Cloudflare Transform Rules / `_headers` on Pages / S3 metadata) if the deployment target is not Pages.
+Primary artifact `dist/index.html` (~392.96 kB, + `dist/images/` — 8 files, + `dist/_headers`) — no server, no env vars, no rewrites needed. The artifact ships a scoped `Content-Security-Policy` meta (`img-src 'self' data: blob:` only, `object-src 'none'`, `base-uri 'self'`, Google Fonts, `frame-src` Google Maps) + a `Referrer-Policy` meta. `public/_headers` adds the host-level headers a static file cannot set (HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`) — **on Cloudflare Pages only**. The current host is not assumed to be Pages — those headers are not served on generic static hosts (S3, GH Pages, proxied origins) without an explicit host config. Add the five headers via the host's header config (Cloudflare Transform Rules / `_headers` on Pages / S3 metadata) if the deployment target is not Pages.
 
 CSP (current `index.html`): `img-src 'self' data: blob:` + `script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com` + `object-src 'none'` + `base-uri 'self'` + `frame-src https://www.google.com` + `style-src https://fonts.googleapis.com`; `<meta name="referrer" content="strict-origin-when-cross-origin">`.
 
@@ -259,11 +259,11 @@ Why `HashRouter`: deep-links like `/#/worship#mass` or `/#/ministries#liturgical
 
 This repo follows the six-phase workflow in `CLAUDE.md` (ANALYZE → PLAN → VALIDATE → IMPLEMENT → VERIFY → DELIVER).
 
-- **TDD:** `RED → GREEN → REFACTOR → Commit` — one cycle per commit; write a failing test before fixing a bug. The Vitest harness is restored (F1) — `pnpm test` (17/117) gates again alongside lint/typecheck/build.
+- **TDD:** `RED → GREEN → REFACTOR → Commit` — one cycle per commit; write a failing test before fixing a bug. The Vitest harness is restored (F1) — `pnpm test` (17/118) gates again alongside lint/typecheck/build.
 - **Commits:** Conventional Commits — `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `style:` — atomic, subject ≤72 chars.
 - **Branches:** `feat/<slug>`, `fix/<slug>`, `docs/<slug>` — short-lived (1–3 days), squash-merge.
 - **Conventions:** `PascalCase.tsx` for components/pages, `camelCase.ts` for data/utils, `primaryNav` single-source, alias routes preserved, `cn()` for merges, `shrine-*` tokens only (including `shrine-gold-700` `#85601f`).
-- **Pre-push gate:** `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` — **all five green** (lint 0 + typecheck 0 + 17/117 + 51/51 + 391.57 kB). CI mirrors this in `.github/workflows/ci.yml` (Node 24, pnpm 11). Sixth built-artifact check: `pnpm test:e2e:built` — vs `vite preview`/live (also green).
+- **Pre-push gate:** `pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build` — **all five green** (lint 0 + typecheck 0 + 17/118 + 51/51 + 392.96 kB). CI mirrors this in `.github/workflows/ci.yml` (Node 24, pnpm 11). Sixth built-artifact check: `pnpm test:e2e:built` — vs `vite preview`/live (also green).
 
 > `skills/` is vendored reference content — tracked in full (`0be0fe8`, 2026-08-31; catalog + per-skill `SKILL.md` files); lint/build tooling ignores it — do not import from or lint it. `src.orig/` is **not part of the repository** (the historical 77-file Risen Christ archive lived only in the port session's local worktree); lineage lives in `docs/` + git history. See `AGENTS.md` for the compact cheat sheet.
 

@@ -22,7 +22,7 @@ test.describe("path-style deep links (audit F-3)", () => {
     await page.goto("/news-events");
     await expect(page).toHaveURL(/#\/news-events/);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      /life of the parish/i,
+      /life of the tent/i,
     );
   });
 

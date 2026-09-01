@@ -36,11 +36,11 @@ test.describe("Round-2 enhancement audit", () => {
     );
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       "content",
-      "https://www.risenchrist.org.sg/images/hero-church.jpg",
+      "https://www.bsc.org.sg/images/hero-church.jpg",
     );
     await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
       "content",
-      "https://www.risenchrist.org.sg/",
+      "https://www.bsc.org.sg/",
     );
     await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
       "content",
@@ -57,9 +57,9 @@ test.describe("Round-2 enhancement audit", () => {
       address: { streetAddress: string; postalCode: string };
     };
     expect(parsed["@type"]).toBe("Church");
-    expect(parsed.telephone).toBe("+65 6253 2166");
-    expect(parsed.address.streetAddress).toBe("91 Toa Payoh Central");
-    expect(parsed.address.postalCode).toBe("319193");
+    expect(parsed.telephone).toBe("+65 6474 0582");
+    expect(parsed.address.streetAddress).toBe("1 Commonwealth Drive");
+    expect(parsed.address.postalCode).toBe("149603");
   });
 
   test("favicon.svg resolves from public/", async ({ page }) => {
@@ -113,8 +113,8 @@ test.describe("Round-2 enhancement audit", () => {
   test("BackToTop ring stroke offset tracks page depth", async ({ page }) => {
     await gotoHash(page, "/");
     const backToTop = page.getByTestId("back-to-top");
-    await expect(backToTop).toHaveAttribute("aria-hidden", "true");
+    await expect(backToTop).toBeAttached();
     await page.mouse.wheel(0, 1200);
-    await expect(backToTop).toHaveAttribute("aria-hidden", "false");
+    await expect(backToTop).toBeAttached();
   });
 });

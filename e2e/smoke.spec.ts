@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("smoke — routing & hash anchors", () => {
-  test("home renders hero and quick facts (Risen Christ)", async ({ page }) => {
+  test("home renders hero and quick facts (Blessed Sacrament)", async ({ page }) => {
     await page.goto("/#/");
-    await expect(page.getByRole("heading", { name: /He is risen/i })).toBeVisible();
-    await expect(page.getByText(/Toa Payoh/i).first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: /A tent of meeting/i })).toBeVisible();
+    await expect(page.getByText(/Commonwealth/i).first()).toBeVisible();
     await expect(page.getByText("Sunday").first()).toBeVisible();
     await expect(page.getByText("Feast").first()).toBeVisible();
     await expect(page.getByText(/Blessed/i).first()).toBeVisible();
@@ -19,10 +19,10 @@ test.describe("smoke — routing & hash anchors", () => {
 
   test("Ministries alias routes render same page", async ({ page }) => {
     await page.goto("/#/ministries");
-    await expect(page.getByRole("heading", { name: /Take a place in the household/i }).first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Forty ways to keep the tent/i }).first()).toBeVisible();
 
     await page.goto("/#/ministry");
-    await expect(page.getByRole("heading", { name: /Take a place in the household/i }).first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Forty ways to keep the tent/i }).first()).toBeVisible();
   });
 
   test("Worship hash anchors are reachable", async ({ page }) => {
@@ -99,7 +99,7 @@ test.describe("smoke — routing & hash anchors", () => {
     await page.goto("/#/");
     const hero = page.locator("section").first();
     await expect(hero.locator("h1")).toHaveClass(/rise-in rise-in-d1/);
-    await expect(hero.getByText(/A parish since 1971/i)).toHaveClass(/rise-in/);
+    await expect(hero.getByText(/A Sacred Hearts parish since 1965/i)).toHaveClass(/rise-in/);
     await expect(hero.getByRole("link", { name: "Mass times" })).toBeVisible();
     // Entrance animations settle at full opacity (fill-mode both).
     await expect.poll(async () =>
